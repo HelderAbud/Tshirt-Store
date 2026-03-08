@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: loja-revenda-backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/loja_revenda
+    username: app
+    password: app
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+

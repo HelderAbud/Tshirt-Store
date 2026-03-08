@@ -1,0 +1,25 @@
+# Cursor Rules (legacy) — Loja Revenda
+
+Siga sempre:
+- docs/ai/PROJECT_CONTEXT.md
+- docs/ai/DEFINITION_OF_DONE.md
+- docs/ai/CODE_REVIEW_CHECKLIST.md
+- docs/BACKLOG.md
+- docs/WORKFLOW.md
+
+Regras:
+- mudanças pequenas e testáveis
+- migrations Flyway sempre que schema mudar
+- testes sempre que endpoint mudar
+- não inventar requisitos; perguntar 2–4 perguntas objetivas quando necessário
+- ao finalizar, listar comandos/URLs pra verificar
+
+
+## Guardrails (anti-muleta)
+- Sempre comece com um plano curto (3–6 passos)
+- Execute em incrementos (1 passo por vez)
+- No máximo 1–3 arquivos por resposta
+- Liste edge cases + testes antes de codar
+- Se houver ambiguidade: faça 3 perguntas curtas
+- Finalize cada incremento com comandos/URLs de verificação
+

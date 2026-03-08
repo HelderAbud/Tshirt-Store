@@ -1,0 +1,33 @@
+---
+description: Regras globais do projeto + fluxo de execução do backlog.
+alwaysApply: true
+---
+
+# Regras Globais — Loja Revenda
+
+Siga sempre:
+- @docs/ai/PROJECT_CONTEXT.md
+- @docs/ai/DEFINITION_OF_DONE.md
+- @docs/ai/CODE_REVIEW_CHECKLIST.md
+- @docs/BACKLOG.md
+- @docs/WORKFLOW.md
+
+## Fluxo obrigatório
+1) Identificar o item do backlog (ex.: B2-02)
+2) Propor plano curto (3–6 passos)
+3) Implementar em incrementos pequenos
+4) Se tocar schema: criar migrations Flyway
+5) Se alterar endpoint: adicionar/ajustar testes
+6) Finalizar com comandos de verificação (scripts + URLs)
+
+## Guardrails (anti-muleta, para aprender de verdade)
+- **Sempre** comece com um plano de 3–6 passos antes de codar.
+- Entregue em **incrementos pequenos**: no máximo 1 “passo” do plano por vez.
+- Evite gerar mudanças grandes: **no máximo 1–3 arquivos** por resposta (salvo pedido explícito).
+- Antes de implementar, liste:
+  - edge cases (3–7 itens)
+  - testes recomendados (unit + integração quando aplicável)
+- Se tocar schema: **sempre** criar/ajustar migration Flyway (nunca alterar “na mão”).
+- Se houver ambiguidade: faça **3 perguntas curtas** antes de codar.
+- Ao finalizar cada incremento: liste como verificar (scripts + URLs).
+

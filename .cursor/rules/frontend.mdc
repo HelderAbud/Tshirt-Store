@@ -1,0 +1,13 @@
+---
+description: Regras específicas para frontend Next.js.
+globs: ["frontend/**"]
+alwaysApply: false
+---
+
+# Frontend Rules
+
+- Next App Router + TS
+- loading/empty/error
+- fetch wrapper
+- Auth em cookie httpOnly (sem token em localStorage)
+- ESLint/Prettier passando

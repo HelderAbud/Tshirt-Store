@@ -1,0 +1,86 @@
+---
+description: Stack padrão da loja de revenda (Java/Spring monolítico) e convenções de backend.
+alwaysApply: true
+---
+
+# Stack padrão – Loja de Revenda
+
+## Comportamento do agente
+
+- **Nunca executar uma tarefa sem antes perguntar ao usuário.** Sempre confirmar o que será feito antes de aplicar alterações.
+
+## Tecnologias principais
+
+- **Linguagem e build**
+  - Java 21 (ou 17 LTS se necessário)
+  - Maven (preferencial) ou Gradle se o projeto já estiver em Gradle
+
+- **Backend (API)**
+  - Spring Boot 3
+  - Spring Web (REST)
+  - Spring Validation (Bean Validation)
+  - Spring Data JPA + Hibernate
+  - Flyway para migração de banco
+  - Spring Security
+    - Começar com JWT para autenticação (ou sessão simples se o cenário for bem básico)
+  - springdoc-openapi (Swagger UI) para documentação da API
+
+- **Banco e infraestrutura local**
+  - PostgreSQL como banco padrão
+  - Docker + docker-compose para subir app + banco em desenvolvimento
+
+- **Testes**
+  - JUnit 5
+  - Mockito
+  - Testcontainers para testes de integração com Postgres real
+
+- **Observabilidade**
+  - Spring Boot Actuator
+  - Micrometer
+
+- **Qualidade / CI**
+  - GitHub Actions para CI
+  - Opcional: Spotless/Checkstyle para manter formatação e estilo
+
+- **Extras (somente se necessário)**
+  - Redis, mensageria, mecanismos de busca etc. só quando surgir uma necessidade clara.
+
+## Convenções gerais para o agente
+
+- **Arquitetura**
+  - Preferir um monólito bem modularizado ao invés de microserviços neste início.
+  - Utilizar camadas claras: controller → service → repository → domain.
+  - Evitar lógica de negócio em controllers ou repositórios.
+
+- **Banco de dados e migrações**
+  - Sempre que o schema mudar, criar uma nova migration Flyway em `src/main/resources/db/migration`.
+  - Nunca alterar migrations antigas já executadas em ambientes compartilhados.
+
+- **Endpoints e contratos**
+  - Todos os endpoints REST devem ser documentados no Swagger (springdoc-openapi).
+  - Utilizar DTOs (request/response) separados das entidades JPA.
+
+- **Validação**
+  - Usar Bean Validation (@NotNull, @Size, etc.) nos DTOs de entrada.
+  - Lidar com erros de validação com handlers globais, retornando respostas claras.
+
+- **Segurança**
+  - Proteger endpoints sensíveis com Spring Security.
+  - Padrão inicial: autenticação via JWT.
+  - Definir papéis/perfis (ex.: ADMIN, SELLER, CUSTOMER) claramente.
+
+- **Testes**
+  - Para cada novo endpoint ou caso de uso importante, criar testes:
+    - Unitários com JUnit + Mockito.
+    - De integração com Testcontainers quando envolver banco de dados.
+  - Não aceitar código sem pelo menos cobertura básica de testes no backend.
+
+- **Observabilidade**
+  - Habilitar Actuator e expor endpoints básicos de saúde.
+  - Usar Micrometer para métricas importantes (latência, erros etc.) quando fizer sentido.
+
+- **CI/CD**
+  - Sempre que possível, manter pipeline no GitHub Actions rodando testes e lints.
+  - Não misturar configuração de CI diretamente no código de negócio.
+
+O agente deve seguir essas convenções sempre que sugerir código ou arquitetura para o backend da loja de revenda.
