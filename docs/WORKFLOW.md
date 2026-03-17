@@ -8,9 +8,11 @@ Pequeno, testável, com CI verde.
 - Pegue a próxima tarefa (ex.: **B2-02**)
 - Leia os critérios de aceite e dependências
 
-## 2) Crie uma branch
+## 2) Crie uma branch (GitFlow: use `feature/`)
 ```bash
-git checkout -b feat/B2-02-variants
+git checkout develop
+git pull
+git checkout -b feature/B2-02-variants
 ```
 
 ## 3) Peça para o Cursor implementar (com o prompt certo)

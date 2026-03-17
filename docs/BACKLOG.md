@@ -12,8 +12,8 @@ Dica: sempre execute em PR pequeno.
 - [x] **B0-02** Docker Compose com MySQL
 - [x] **B0-03** Backend Spring Boot base + healthcheck
 - [x] **B0-04** Flyway habilitado + primeira migration
-- [ ] **B0-05** Swagger (OpenAPI) ligado
-- [ ] **B0-06** Qualidade/CI (gates obrigatórios)
+- [x] **B0-05** Swagger (OpenAPI) ligado
+- [x] **B0-06** Qualidade/CI (gates obrigatórios)
 
 ## Marco B1 — Auth + usuários
 - [ ] **B1-01** Cadastro/Login (JWT)

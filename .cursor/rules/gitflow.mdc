@@ -1,0 +1,22 @@
+---
+description: GitFlow é o modelo de branches obrigatório neste projeto.
+alwaysApply: true
+---
+
+# GitFlow — Regra do Projeto
+
+Este projeto usa **GitFlow**. O agente deve respeitar esse fluxo ao sugerir branches, PRs ou comandos git.
+
+## Branches
+
+- **main**: produção. Merge apenas de `release/*` ou `hotfix/*`.
+- **develop**: integração. Merge de `feature/*`, `release/*`, `hotfix/*`.
+- **feature/\***: origem `develop`, destino `develop`.
+- **release/\***: origem `develop`, destino `main` e `develop`.
+- **hotfix/\***: origem `main`, destino `main` e `develop`.
+
+## Comportamento do agente
+
+- Ao criar ou sugerir branches, usar os prefixos corretos (`feature/`, `release/`, `hotfix/`).
+- Nunca sugerir commit ou merge direto em `main` ou `develop` sem PR.
+- Referenciar `docs/GITFLOW.md` quando o usuário tiver dúvidas sobre o fluxo.
