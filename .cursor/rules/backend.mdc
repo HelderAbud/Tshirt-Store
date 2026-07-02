@@ -1,0 +1,14 @@
+---
+description: Regras específicas para backend Spring/JPA/MySQL.
+globs: ["backend/**"]
+alwaysApply: false
+---
+
+# Backend Rules
+
+- DTOs + validação
+- Erros padronizados
+- Flyway para schema
+- Evitar N+1
+- Transações em pedido/pagamento/estoque
+- Testcontainers (MySQL) em fluxos críticos

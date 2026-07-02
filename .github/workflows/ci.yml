@@ -1,0 +1,39 @@
+# CI – GitFlow (main, develop, feature/*, release/*, hotfix/*)
+# Build, lint (Spotless) e testes unitários do backend.
+# CD fica para uma etapa posterior.
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop, 'feature/*', 'release/*', 'hotfix/*']
+  pull_request:
+    branches: [main, develop, 'feature/*', 'release/*', 'hotfix/*']
+
+jobs:
+  backend:
+    name: Backend (build + lint + test)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Spotless check
+        run: mvn -q spotless:check
+
+      - name: Build
+        run: mvn -q -DskipTests package
+
+      - name: Unit tests
+        run: mvn -q test

@@ -4,6 +4,37 @@ Backend de um **e-commerce de camisetas** (loja de revenda) em construção. Est
 
 ---
 
+## Resumo para LinkedIn / vitrine (copiar)
+
+**GitHub:** https://github.com/HelderAbud/Tshirt-Store
+
+**T-Shirt Store API**
+
+API REST para gerenciamento de uma loja virtual, com funcionalidades de cadastro de produtos e estrutura base para fluxo de pedidos.
+
+**Tecnologias:** Java, Spring Boot
+
+**Destaques:**
+
+- Estrutura backend para e-commerce
+- Base para implementação de autenticação e carrinho de compras
+- Projeto com foco em cenário real de mercado
+
+---
+
+## Visão para portfólio (preencha)
+
+Use esta tabela ao divulgar no LinkedIn ou em currículos; substitua os campos `[PREENCHER_*]`.
+
+| Campo | Valor |
+|--------|--------|
+| **Pitch em uma linha** | API REST de e-commerce (camisetas) com JWT, MySQL, Flyway e CI — evoluindo para carrinho, pedidos e fluxo de pagamento simulado. |
+| **Deploy / demo** | [PREENCHER_URL_API_OU_SWAGGER_OU_"não publicado ainda"] |
+| **Vídeo ou post LinkedIn** | [PREENCHER_LINK_OU_remover] |
+| **Destaque técnico** | [PREENCHER_EX.: OpenAPI, testes, GitHub Actions — personalize] |
+
+---
+
 ## Sumário
 
 - [Visão geral](#visão-geral)
@@ -65,14 +96,15 @@ Catálogo de produtos, carrinho, pedidos e frontend ainda não estão implementa
 Na raiz do repositório:
 
 ```bash
+cp .env.example .env
 cd infra
-docker compose up -d
+docker compose --env-file ../.env up -d
 ```
 
-Isso sobe MySQL 8 com:
+Edite o `.env` local antes de rodar fora de experimentos. O Compose sobe MySQL 8 com:
 
 - Banco: `loja_revenda`
-- Usuário: `app` / senha: `app` (alinhado a [`backend/src/main/resources/application.yml`](backend/src/main/resources/application.yml))
+- Usuário e senha definidos por `MYSQL_USER` e `MYSQL_PASSWORD`
 - Porta: `3306`
 
 Aguarde o container ficar saudável antes de iniciar a API.
@@ -84,7 +116,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-A aplicação sobe na porta **8080** (padrão Spring Boot), salvo override em variáveis de ambiente ou perfil.
+A aplicação sobe na porta **8080** (padrão Spring Boot), salvo override em variáveis de ambiente ou perfil. Defina também `JWT_SECRET` com um valor Base64 de pelo menos 256 bits.
 
 ### 3. (Opcional) Apenas testes sem Docker
 
