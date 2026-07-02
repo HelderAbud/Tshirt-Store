@@ -16,7 +16,7 @@ Dica: sempre execute em PR pequeno.
 - [x] **B0-06** Qualidade/CI (gates obrigatórios)
 
 ## Marco B1 — Auth + usuários
-- [ ] **B1-01** Cadastro/Login (JWT)
+- [x] **B1-01** Cadastro/Login (JWT)
 - [ ] **B1-02** Autorização por role (ADMIN/CUSTOMER)
 
 ## Marco B2 — Catálogo

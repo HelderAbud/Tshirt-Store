@@ -3,7 +3,7 @@ description: Regras globais do projeto + fluxo de execução do backlog.
 alwaysApply: true
 ---
 
-# Regras Globais — Loja Revenda
+# Regras Globais — Tshirt-Store
 
 Siga sempre:
 - @docs/ai/PROJECT_CONTEXT.md
@@ -11,23 +11,28 @@ Siga sempre:
 - @docs/ai/CODE_REVIEW_CHECKLIST.md
 - @docs/BACKLOG.md
 - @docs/WORKFLOW.md
+- @AGENTS.md
 
-## Fluxo obrigatório
-1) Identificar o item do backlog (ex.: B2-02)
-2) Propor plano curto (3–6 passos)
-3) Implementar em incrementos pequenos
-4) Se tocar schema: criar migrations Flyway
-5) Se alterar endpoint: adicionar/ajustar testes
-6) Finalizar com comandos de verificação (scripts + URLs)
+## Fluxo obrigatório Rheyder/Superpowers
+
+1. Triar a tarefa como `Hotfix`, `Complex`, `Normal` ou `Simple`.
+2. Identificar item do backlog quando existir (ex.: B2-02).
+3. Para tarefa não trivial, usar Plan Mode e plano aprovado antes de editar.
+4. Implementar em fatias pequenas e verificáveis.
+5. Se tocar schema, criar nova migration Flyway.
+6. Se alterar endpoint, contrato REST, segurança ou regra de negócio, adicionar/ajustar teste.
+7. Finalizar com verificação objetiva e resumo de riscos.
 
 ## Guardrails (anti-muleta, para aprender de verdade)
-- **Sempre** comece com um plano de 3–6 passos antes de codar.
-- Entregue em **incrementos pequenos**: no máximo 1 “passo” do plano por vez.
-- Evite gerar mudanças grandes: **no máximo 1–3 arquivos** por resposta (salvo pedido explícito).
+
+- Comece com um plano de 3-6 passos antes de codar, salvo mudança `Simple`.
+- Entregue no máximo 1 passo do plano por vez quando a tarefa for relevante.
+- Evite mudanças grandes: preferir 1-3 arquivos por incremento.
 - Antes de implementar, liste:
   - edge cases (3–7 itens)
   - testes recomendados (unit + integração quando aplicável)
-- Se tocar schema: **sempre** criar/ajustar migration Flyway (nunca alterar “na mão”).
-- Se houver ambiguidade: faça **3 perguntas curtas** antes de codar.
-- Ao finalizar cada incremento: liste como verificar (scripts + URLs).
+- Segredos devem vir de variáveis de ambiente ou `.env` local não versionado.
+- Não commitar `backend/target/`, `.env`, tokens, chaves privadas ou dumps.
+- Se houver ambiguidade, faça perguntas curtas antes de codar.
+- Ao finalizar cada incremento, liste como verificar.
 

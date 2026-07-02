@@ -2,9 +2,9 @@ spring:
   application:
     name: loja-revenda-backend
   datasource:
-    url: jdbc:mysql://localhost:3306/loja_revenda
-    username: app
-    password: app
+    url: ${DB_URL:jdbc:mysql://localhost:3306/loja_revenda}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -17,4 +17,8 @@ management:
     web:
       exposure:
         include: health,info
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
 

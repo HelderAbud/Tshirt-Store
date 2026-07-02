@@ -3,11 +3,13 @@ description: Stack padrão da loja de revenda (Java/Spring monolítico) e conven
 alwaysApply: true
 ---
 
-# Stack padrão – Loja de Revenda
+# Stack padrão — Tshirt-Store
 
 ## Comportamento do agente
 
 - **Nunca executar uma tarefa sem antes perguntar ao usuário.** Sempre confirmar o que será feito antes de aplicar alterações.
+- Antes de editar, trie a tarefa como `Hotfix`, `Complex`, `Normal` ou `Simple`.
+- Para tarefa não trivial, use Plan Mode e aguarde aprovação do plano.
 
 ## Tecnologias principais
 
@@ -26,13 +28,15 @@ alwaysApply: true
   - springdoc-openapi (Swagger UI) para documentação da API
 
 - **Banco e infraestrutura local**
-  - PostgreSQL como banco padrão
+  - MySQL 8 como banco atual do projeto
+  - H2 em memória para testes automatizados existentes
   - Docker + docker-compose para subir app + banco em desenvolvimento
 
 - **Testes**
   - JUnit 5
   - Mockito
-  - Testcontainers para testes de integração com Postgres real
+  - MockMvc para controllers
+  - Testcontainers com MySQL apenas quando houver fluxo crítico que exija banco real
 
 - **Observabilidade**
   - Spring Boot Actuator
@@ -68,11 +72,13 @@ alwaysApply: true
   - Proteger endpoints sensíveis com Spring Security.
   - Padrão inicial: autenticação via JWT.
   - Definir papéis/perfis (ex.: ADMIN, SELLER, CUSTOMER) claramente.
+  - Não hardcodar secrets; JWT e credenciais devem vir de variáveis de ambiente ou `.env` local não versionado.
 
 - **Testes**
   - Para cada novo endpoint ou caso de uso importante, criar testes:
     - Unitários com JUnit + Mockito.
-    - De integração com Testcontainers quando envolver banco de dados.
+    - Controller tests com MockMvc quando envolver API REST.
+    - Integração com MySQL/Testcontainers apenas quando o risco justificar.
   - Não aceitar código sem pelo menos cobertura básica de testes no backend.
 
 - **Observabilidade**

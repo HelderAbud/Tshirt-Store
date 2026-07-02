@@ -22,7 +22,9 @@ class OpenApiDocsTest {
   @Test
   @DisplayName("Deve expor o endpoint /v3/api-docs com status 200")
   void shouldExposeOpenApiDocs() throws Exception {
-    mockMvc.perform(get("/v3/api-docs")).andExpect(status().isOk()).andExpect(jsonPath("$.openapi").exists());
+    mockMvc
+        .perform(get("/v3/api-docs"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.openapi").exists());
   }
 }
-
