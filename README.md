@@ -1,6 +1,8 @@
 # Tshirt-Store
 
-Backend de um **e-commerce de camisetas** (loja de revenda) em construção. Este repositório contém o **API REST** em **Spring Boot**; o frontend (Next.js) está planejado no roadmap.
+> **Desenvolvimento pausado** — prioridade [LojApp](https://github.com/HelderAbud/Sistema-Loja) e [HH Financeiro](https://github.com/HelderAbud/Gestao-Financeira). Retoma sob decisão na [`TRILHA-DIA-A-DIA.md`](TRILHA-DIA-A-DIA.md) (Opção A registada em 2026-07-09).
+
+Backend de um **e-commerce de camisetas** (loja de revenda) em MVP parcial. Este repositório contém a **API REST** em **Spring Boot**; catálogo, carrinho, pedidos e frontend **ainda não** estão implementados.
 
 ---
 
@@ -8,30 +10,29 @@ Backend de um **e-commerce de camisetas** (loja de revenda) em construção. Est
 
 **GitHub:** https://github.com/HelderAbud/Tshirt-Store
 
-**T-Shirt Store API**
+**T-Shirt Store API** *(desenvolvimento pausado)*
 
-API REST para gerenciamento de uma loja virtual, com funcionalidades de cadastro de produtos e estrutura base para fluxo de pedidos.
+API REST base para loja de camisetas: healthcheck, JWT, Flyway/MySQL, Swagger e CI. Catálogo e fluxo de pedidos ainda não implementados.
 
-**Tecnologias:** Java, Spring Boot
+**Tecnologias:** Java 21, Spring Boot 3, Spring Security (JWT), MySQL, Flyway, springdoc-openapi, GitHub Actions
 
-**Destaques:**
+**Destaques (estado real):**
 
-- Estrutura backend para e-commerce
-- Base para implementação de autenticação e carrinho de compras
-- Projeto com foco em cenário real de mercado
+- Auth JWT (`POST /api/auth/login`, `/api/me`)
+- Health + OpenAPI/Swagger + Flyway
+- CI (Spotless + testes)
+- *Pausado:* prioridade LojApp e HH Financeiro
 
 ---
 
-## Visão para portfólio (preencha)
-
-Use esta tabela ao divulgar no LinkedIn ou em currículos; substitua os campos `[PREENCHER_*]`.
+## Visão para portfólio
 
 | Campo | Valor |
 |--------|--------|
-| **Pitch em uma linha** | API REST de e-commerce (camisetas) com JWT, MySQL, Flyway e CI — evoluindo para carrinho, pedidos e fluxo de pagamento simulado. |
-| **Deploy / demo** | [PREENCHER_URL_API_OU_SWAGGER_OU_"não publicado ainda"] |
-| **Vídeo ou post LinkedIn** | [PREENCHER_LINK_OU_remover] |
-| **Destaque técnico** | [PREENCHER_EX.: OpenAPI, testes, GitHub Actions — personalize] |
+| **Pitch em uma linha** | API REST (camisetas) com JWT, MySQL, Flyway e CI — MVP parcial; catálogo/carrinho pendentes; desenvolvimento pausado. |
+| **Deploy / demo** | Não publicado ainda |
+| **Vídeo ou post LinkedIn** | Pendente — não destacar até retomar |
+| **Destaque técnico** | JWT, Flyway, Swagger/OpenAPI, GitHub Actions, Spotless |
 
 ---
 
