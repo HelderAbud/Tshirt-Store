@@ -1,6 +1,6 @@
 # AGENTS.md — Tshirt-Store
 
-Guia operacional para agentes de IA no projeto **Tshirt-Store**, alinhado ao Rheyder Method v1.2 e ao fluxo Superpowers no Cursor: entender contexto, planejar antes de editar, executar em fatias pequenas, validar com evidência e pedir aprovação humana nos pontos sensíveis.
+Guia operacional para agentes de IA no projeto **Tshirt-Store**, alinhado ao Helder Method v1.2 e ao fluxo Superpowers no Cursor: entender contexto, planejar antes de editar, executar em fatias pequenas, validar com evidência e pedir aprovação humana nos pontos sensíveis.
 
 ## Visão Geral
 
@@ -10,7 +10,7 @@ Guia operacional para agentes de IA no projeto **Tshirt-Store**, alinhado ao Rhe
 - Fluxo de trabalho: GitFlow. Ver `docs/GITFLOW.md` e `.cursor/rules/gitflow.mdc`.
 - Backlog: `docs/BACKLOG.md`.
 
-## Triagem Rheyder
+## Triagem Helder
 
 - `Hotfix`: produção quebrada/degradada. Fazer patch mínimo e validar o sintoma.
 - `Complex`: alto risco, segurança sensível, integração externa, schema amplo, arquitetura ou custo alto de erro.
