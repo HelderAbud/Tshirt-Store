@@ -212,4 +212,4 @@ Próximos marcos típicos: autorização por role (ADMIN/CUSTOMER), CRUD de prod
 
 ## Licença
 
-Veja o arquivo [`LICENSE`](LICENSE) na raiz do repositório.
+Distribuído sob a licença [MIT](LICENSE). Copyright (c) 2026 Helder Abud.
