@@ -59,11 +59,13 @@
 **Trilha:** Simple
 
 **Tarefas**
-- [ ] Banner no README: *"Desenvolvimento pausado — prioridade LojApp e HH Financeiro"*
-- [ ] Atualizar tabela portfólio: estado real (auth + health; catálogo pendente)
-- [ ] Decisão registrada no plano
+- [x] Banner no README: *"Desenvolvimento pausado — prioridade LojApp e HH Financeiro"*
+- [x] Atualizar tabela portfólio: estado real (auth + health; catálogo pendente)
+- [x] Decisão registrada no plano
 
 **Validação:** README não promete e-commerce completo.
+
+**Evidência:** `.cursor/plans/plan-2026-07-09-tshirt-decisao.md`
 
 ---
 
