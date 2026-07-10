@@ -1,4 +1,4 @@
-# Workflow — Rheyder Method + Superpowers
+# Workflow — Helder Method + Superpowers
 
 ## 0. Regra de ouro
 
