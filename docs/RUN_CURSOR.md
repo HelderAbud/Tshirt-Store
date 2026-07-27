@@ -9,8 +9,8 @@
 
 Acessos:
 - Front: http://localhost:3000
-- Swagger: http://localhost:8080/swagger-ui/index.html
-- Health: http://localhost:8080/actuator/health
+- Swagger: http://localhost:8084/swagger-ui/index.html
+- Health: http://localhost:8084/actuator/health
 
 ## Como usar a IA sem virar muleta
 1) Escolha um item do backlog em `docs/BACKLOG.md`

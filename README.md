@@ -33,6 +33,7 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 | **Deploy / demo** | Não publicado ainda |
 | **Vídeo ou post LinkedIn** | Pendente — após fechar DoD Opção B |
 | **Destaque técnico** | JWT roles, Flyway, Swagger/OpenAPI, GitHub Actions, Spotless |
+| **Etapas do MVP** | [`docs/portfolio/etapas.md`](docs/portfolio/etapas.md) · screenshot [`docs/screenshots/swagger-products.png`](docs/screenshots/swagger-products.png) |
 
 ---
 
@@ -107,7 +108,7 @@ Edite o `.env` local antes de rodar fora de experimentos. O Compose sobe MySQL 8
 
 - Banco: `loja_revenda`
 - Usuário e senha definidos por `MYSQL_USER` e `MYSQL_PASSWORD`
-- Porta: `3306`
+- Porta (host): `3308` (matriz portfólio; container interno 3306)
 
 Aguarde o container ficar saudável antes de iniciar a API.
 
@@ -118,7 +119,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-A aplicação sobe na porta **8080** (padrão Spring Boot), salvo override em variáveis de ambiente ou perfil. Defina também `JWT_SECRET` com um valor Base64 de pelo menos 256 bits.
+A aplicação sobe na porta **8084** (`server.port` / `SERVER_PORT`; matriz portfólio). Defina também `JWT_SECRET` com um valor Base64 de pelo menos 256 bits.
 
 ### 3. (Opcional) Apenas testes sem Docker
 
@@ -135,10 +136,10 @@ mvn test
 
 | Recurso | URL (local) |
 |---------|----------------|
-| OpenAPI (JSON) | http://localhost:8080/v3/api-docs |
-| Swagger UI | http://localhost:8080/swagger-ui/index.html |
-| Health | `GET` http://localhost:8080/api/health |
-| Actuator (health/info) | http://localhost:8080/actuator |
+| OpenAPI (JSON) | http://localhost:8084/v3/api-docs |
+| Swagger UI | http://localhost:8084/swagger-ui.html |
+| Health | `GET` http://localhost:8084/api/health |
+| Actuator (health/info) | http://localhost:8084/actuator |
 
 ---
 

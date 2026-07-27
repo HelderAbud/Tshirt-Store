@@ -7,7 +7,7 @@
 
 | Config        | Valor          |
 |---------------|----------------|
-| Porta         | 3306           |
+| Porta (host)  | 3308           |
 | Banco         | `loja_revenda` |
 | User (app)    | `app`          |
 | Password (app)| `app`          |
