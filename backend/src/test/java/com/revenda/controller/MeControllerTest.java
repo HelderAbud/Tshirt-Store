@@ -32,6 +32,14 @@ class MeControllerTest {
   }
 
   @Test
+  @DisplayName("Deve retornar 401 ao acessar /api/me com HTTP Basic (JWT-only)")
+  void shouldReturnUnauthorizedWithHttpBasic() throws Exception {
+    mockMvc
+        .perform(get("/api/me").header(HttpHeaders.AUTHORIZATION, "Basic dXNlcjpwYXNz"))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
   @DisplayName("Deve retornar dados do usuário ao acessar /api/me com token válido")
   void shouldReturnUserDataWithValidToken() throws Exception {
     User user = new User("me@example.com", "encoded", UserRole.CUSTOMER);
