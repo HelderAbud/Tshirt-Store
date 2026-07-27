@@ -17,12 +17,12 @@ Dica: sempre execute em PR pequeno.
 
 ## Marco B1 — Auth + usuários
 - [x] **B1-01** Cadastro/Login (JWT)
-- [ ] **B1-02** Autorização por role (ADMIN/CUSTOMER)
+- [x] **B1-02** Autorização por role (ADMIN/CUSTOMER)
 
 ## Marco B2 — Catálogo
-- [ ] **B2-01** CRUD de Product (ADMIN)
+- [x] **B2-01** CRUD de Product (ADMIN)
 - [ ] **B2-02** Variações (size/color/sku/price/stock)
-- [ ] **B2-03** Catálogo público (listagem + detalhe)
+- [x] **B2-03** Catálogo público (listagem + detalhe)
 
 ## Marco B3 — Carrinho e pedidos
 - [ ] **B3-01** Carrinho persistido por usuário
@@ -35,10 +35,10 @@ Dica: sempre execute em PR pequeno.
 - [ ] **B4-02** Baixa de estoque ao pagar
 
 ## Marco F1 — Frontend Next.js (MVP)
-- [ ] **F1-01** Setup Next + páginas base
-- [ ] **F1-02** Carrinho no front (integração com API)
-- [ ] **F1-03** Auth no front (cookie httpOnly)
-- [ ] **F1-04** Admin mínimo (produtos e pedidos)
+- [ ] **F1-01** Setup Next + páginas base — *adiado (Opção B)*
+- [ ] **F1-02** Carrinho no front (integração com API) — *adiado*
+- [ ] **F1-03** Auth no front (cookie httpOnly) — *adiado*
+- [ ] **F1-04** Admin mínimo (produtos e pedidos) — *adiado*
 
 ## Marco P1 — Polimento profissional
 - [ ] **P1-01** Padronizar erros (Problem Details)

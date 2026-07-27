@@ -1,10 +1,11 @@
 # Trilha dia a dia — T-Shirt Store
 
 > **Metodologia:** [Helder Method v1.2](../Agentes/helder-method-v1.2-resumo-compartilhavel.md) + [skills-pessoal](../Agentes/skills-pessoal/skills-pessoal/README-pt_br.md) ([WORKFLOW](../Agentes/skills-pessoal/skills-pessoal/WORKFLOW.md))  
-> **Iniciativa:** **Pausa estratégica** ou MVP mínimo (auth + catálogo) — evitar overlap com LojApp  
-> **Triagem Helder:** **Simple** (escopo fechado) ou **PAUSAR** após Dia 2  
-> **Estado:** B0 ✅ · B1 parcial · B2+ pendente ([`docs/BACKLOG.md`](docs/BACKLOG.md))  
+> **Iniciativa:** **MVP mínimo** (auth + catálogo) — Opção B (2026-07-27)  
+> **Triagem Helder:** **Normal** (`tdd` + `mvn test`)  
+> **Estado:** B0 ✅ · B1 ✅ · B2-01/B2-03 ✅ · B2-02/B3+/F1 pendentes ([`docs/BACKLOG.md`](docs/BACKLOG.md))  
 > **Custo:** R$ 0  
+> **Plano ativo:** [`.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md`](.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md)
 
 ---
 
@@ -12,11 +13,11 @@
 
 | Opção | Descrição | Próximo passo |
 |-------|-----------|---------------|
-| **A — PAUSAR** (recomendado) | Foco em LojApp + HH Financeiro | Dias 1–2 abaixo, depois parar |
-| **B — MVP mínimo** | B1-02 roles + B2-01 Product CRUD | Dias 1–14 abaixo |
-| **C — Retomar completo** | Só após LojApp deploy + HH deploy | Reabrir trilha |
+| A — PAUSAR | Foco em LojApp + HH Financeiro | Dias 1–2 Opção A |
+| **B — MVP mínimo** (**escolhida 2026-07-27**) | B1-02 roles + B2 Product/catálogo | Dias 1–14 abaixo |
+| C — Retomar completo | Só após LojApp deploy + HH deploy | Reabrir trilha |
 
-**HITL Dia 1:** você escolhe A, B ou C — registrar em `.cursor/plans/plan-YYYY-MM-DD-tshirt-decisao.md`.
+**HITL Dia 1:** decisão registada em `.cursor/plans/plan-2026-07-09-tshirt-decisao.md` e plano B em `plan-2026-07-27-tshirt-mvp-b.md`.
 
 ---
 
@@ -87,9 +88,9 @@
 
 | Trilha | Normal |
 
-- [ ] Plano: roles + Product CRUD apenas (sem carrinho/front)
-- [ ] Contrato mínimo: endpoints Product em bullet no plano
-- [ ] **Não** iniciar F1 frontend nesta trilha
+- [x] Plano: roles + Product CRUD apenas (sem carrinho/front)
+- [x] Contrato mínimo: endpoints Product em bullet no plano
+- [x] **Não** iniciar F1 frontend nesta trilha
 
 ---
 
@@ -97,9 +98,9 @@
 
 **Fatia vertical:** `@PreAuthorize` ou equivalente em rotas admin.
 
-- [ ] TDD: teste que CUSTOMER não cria produto
-- [ ] Atualizar README autenticação
-- [ ] `mvn test` verde
+- [x] TDD: teste que CUSTOMER não cria produto
+- [x] Atualizar README autenticação
+- [x] `mvn test` verde
 
 **Skills:** `to-spec` → `to-issues` → `tdd` → `slice-verification`.
 
@@ -107,17 +108,17 @@
 
 ### Dia 3 — Migration Product (se não existir)
 
-- [ ] Flyway migration tabela `product`
-- [ ] Campos mínimos: name, price, stock, sku
-- [ ] **HITL:** revisar migration antes de merge
+- [x] Flyway migration tabela `product`
+- [x] Campos mínimos: name, price, stock, sku
+- [x] **HITL:** revisar migration antes de merge
 
 ---
 
 ### Dia 4 — B2-01 CRUD Product (ADMIN)
 
-- [ ] POST/GET/PUT/DELETE `/api/products` (ou path padrão do projeto)
-- [ ] DTOs + validação Bean Validation
-- [ ] Testes MockMvc
+- [x] POST/GET/PUT/DELETE `/api/products` (ou path padrão do projeto)
+- [x] DTOs + validação Bean Validation
+- [x] Testes MockMvc
 
 ---
 
@@ -125,17 +126,17 @@
 
 **Fatia:** leitura pública sem auth vs escrita admin.
 
-- [ ] GET listagem paginada
-- [ ] GET by id
-- [ ] Testes de autorização
+- [x] GET listagem paginada
+- [x] GET by id
+- [x] Testes de autorização
 
 ---
 
 ### Dia 6 — OpenAPI + README
 
-- [ ] Swagger documenta Product
+- [x] Swagger documenta Product
 - [ ] Screenshot `docs/screenshots/swagger-products.png`
-- [ ] Badge CI (já existe workflow)
+- [x] Badge CI (já existe workflow)
 
 ---
 
