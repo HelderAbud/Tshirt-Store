@@ -1,4 +1,4 @@
-package com.revenda.lojarevenda;
+package com.revenda;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
