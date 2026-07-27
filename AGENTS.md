@@ -31,6 +31,8 @@ Suba a trilha se aparecer contrato novo, risco de segurança, mudança de schema
 
 Antes de rodar localmente, defina as variáveis do `.env.example`, especialmente `JWT_SECRET`, `MYSQL_ROOT_PASSWORD` e `MYSQL_PASSWORD`.
 
+Portas canônicas (portfólio): API **8084**, MySQL host **3308** (evita colisão com outros projetos locais).
+
 ## Regras de Execução
 
 - Nunca executar mudança sem confirmar o plano com o usuário.

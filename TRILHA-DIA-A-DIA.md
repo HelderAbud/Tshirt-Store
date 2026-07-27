@@ -135,7 +135,7 @@
 ### Dia 6 — OpenAPI + README
 
 - [x] Swagger documenta Product
-- [ ] Screenshot `docs/screenshots/swagger-products.png`
+- [x] Screenshot `docs/screenshots/swagger-products.png`
 - [x] Badge CI (já existe workflow)
 
 ---
@@ -149,6 +149,7 @@
 4. CRUD Product  
 5. Catálogo público GET  
 
+- [x] `docs/portfolio/etapas.md` criado
 ---
 
 ### Dia 8 — Spotless + CI verde

@@ -1,0 +1,132 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "loja-revenda-backend",
+    "description": "Tshirt-Store API — MVP Opção B (roles + Product + catálogo)",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": ["health-controller"],
+        "operationId": "health",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "login",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": ["me-controller"],
+        "operationId": "me",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/admin/products": {
+      "post": {
+        "tags": ["admin-product-controller"],
+        "summary": "Create product (ADMIN)",
+        "operationId": "createProduct",
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "409": { "description": "Duplicate SKU" }
+        }
+      }
+    },
+    "/api/admin/products/{id}": {
+      "get": {
+        "tags": ["admin-product-controller"],
+        "summary": "Get product by id (ADMIN)",
+        "operationId": "getAdminProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "put": {
+        "tags": ["admin-product-controller"],
+        "summary": "Update product (ADMIN)",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Duplicate SKU" }
+        }
+      },
+      "delete": {
+        "tags": ["admin-product-controller"],
+        "summary": "Delete product (ADMIN)",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/api/catalog/products": {
+      "get": {
+        "tags": ["catalog-product-controller"],
+        "summary": "List products (public)",
+        "operationId": "listCatalogProducts",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/catalog/products/{id}": {
+      "get": {
+        "tags": ["catalog-product-controller"],
+        "summary": "Get product detail (public)",
+        "operationId": "getCatalogProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  }
+}

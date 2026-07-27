@@ -2,21 +2,35 @@ spring:
   application:
     name: loja-revenda-backend
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/loja_revenda}
+    url: ${DB_URL:jdbc:mysql://localhost:3308/loja_revenda}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        type:
+          preferred_enum_jdbc_type: VARCHAR
   flyway:
     enabled: true
+
+server:
+  # Host 8084 — matriz portfólio
+  port: ${SERVER_PORT:8084}
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 app:
   jwt:
