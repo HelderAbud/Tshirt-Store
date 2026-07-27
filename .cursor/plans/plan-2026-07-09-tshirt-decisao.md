@@ -1,32 +1,24 @@
 # Plano — Tshirt-Store decisão Dia 1
 
-**Data:** 2026-07-09  
-**Trilha:** Helder Simple · skills-pessoal fast path  
-**Branch:** `docs/trilha-dia-1-pausa`
+**Data:** 2026-07-09 (atualizado 2026-07-27)  
+**Trilha:** Helder Normal · skills-pessoal core workflow  
+**Branch:** `feature/b102-admin-roles-product`
 
 ## Decisão HITL
 
 | Opção | Escolhida |
 |-------|-----------|
-| **A — PAUSAR** | **Sim** |
-| B — MVP mínimo | Não |
+| A — PAUSAR | Não (supersedida em 2026-07-27) |
+| **B — MVP mínimo** | **Sim** (2026-07-27) |
 | C — Retomar depois | Não |
 
-**Motivo:** evitar overlap com LojApp (estoque/vendas/NFe) e HH Financeiro; manter o repo honesto no portfólio.
+**Motivo original (A):** evitar overlap com LojApp.  
+**Motivo da reabertura (B):** retomar MVP backend (roles + Product + catálogo) sem frontend/carrinho.
 
-## Escopo Dia 1 (esta fatia)
+## Escopo atual
 
-- Banner de pausa no README
-- Resumo LinkedIn e tabela portfólio com estado real (auth + health + CI; sem catálogo/carrinho)
-- Remover `[PREENCHER_*]` da tabela
-- Marcar Dia 1 na TRILHA
-
-## Próximo (Dia 2 — Opção A)
-
-- Data “pausado em” em `docs/BACKLOG.md`
-- Grill-log `docs/grill-logs/validation-YYYY-MM-DD-pausa.md`
-- Não destacar no LinkedIn até retomar
+Ver [plan-2026-07-27-tshirt-mvp-b.md](plan-2026-07-27-tshirt-mvp-b.md).
 
 ## Fora de escopo
 
-- Roles ADMIN/CUSTOMER, Product CRUD, frontend, deploy
+- Variantes, carrinho, pedidos, frontend, deploy

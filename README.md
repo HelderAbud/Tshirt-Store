@@ -1,8 +1,8 @@
 # Tshirt-Store
 
-> **Desenvolvimento pausado** — prioridade [LojApp](https://github.com/HelderAbud/Sistema-Loja) e [HH Financeiro](https://github.com/HelderAbud/Gestao-Financeira). Retoma sob decisão na [`TRILHA-DIA-A-DIA.md`](TRILHA-DIA-A-DIA.md) (Opção A registada em 2026-07-09).
+> **MVP em curso** (Opção B) — roles ADMIN/CUSTOMER + Product/catálogo. Sem carrinho/frontend nesta fatia. Ver [`TRILHA-DIA-A-DIA.md`](TRILHA-DIA-A-DIA.md) e [`.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md`](.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md).
 
-Backend de um **e-commerce de camisetas** (loja de revenda) em MVP parcial. Este repositório contém a **API REST** em **Spring Boot**; catálogo, carrinho, pedidos e frontend **ainda não** estão implementados.
+Backend de um **e-commerce de camisetas** (loja de revenda) em MVP. Este repositório contém a **API REST** em **Spring Boot**; carrinho, pedidos e frontend **ainda não** estão no escopo desta trilha.
 
 ---
 
@@ -10,18 +10,18 @@ Backend de um **e-commerce de camisetas** (loja de revenda) em MVP parcial. Este
 
 **GitHub:** https://github.com/HelderAbud/Tshirt-Store
 
-**T-Shirt Store API** *(desenvolvimento pausado)*
+**T-Shirt Store API** *(MVP em curso)*
 
-API REST base para loja de camisetas: healthcheck, JWT, Flyway/MySQL, Swagger e CI. Catálogo e fluxo de pedidos ainda não implementados.
+API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagger e CI. Catálogo Product em implementação; carrinho/pedidos/front adiados.
 
 **Tecnologias:** Java 21, Spring Boot 3, Spring Security (JWT), MySQL, Flyway, springdoc-openapi, GitHub Actions
 
 **Destaques (estado real):**
 
-- Auth JWT (`POST /api/auth/login`, `/api/me`)
+- Auth JWT (`POST /api/auth/login`, `/api/me`) + roles ADMIN/CUSTOMER
+- Admin Product + catálogo público (Opção B)
 - Health + OpenAPI/Swagger + Flyway
 - CI (Spotless + testes)
-- *Pausado:* prioridade LojApp e HH Financeiro
 
 ---
 
@@ -29,10 +29,10 @@ API REST base para loja de camisetas: healthcheck, JWT, Flyway/MySQL, Swagger e 
 
 | Campo | Valor |
 |--------|--------|
-| **Pitch em uma linha** | API REST (camisetas) com JWT, MySQL, Flyway e CI — MVP parcial; catálogo/carrinho pendentes; desenvolvimento pausado. |
+| **Pitch em uma linha** | API REST (camisetas) com JWT + roles, Product admin e catálogo público — MVP backend em curso; carrinho/front adiados. |
 | **Deploy / demo** | Não publicado ainda |
-| **Vídeo ou post LinkedIn** | Pendente — não destacar até retomar |
-| **Destaque técnico** | JWT, Flyway, Swagger/OpenAPI, GitHub Actions, Spotless |
+| **Vídeo ou post LinkedIn** | Pendente — após fechar DoD Opção B |
+| **Destaque técnico** | JWT roles, Flyway, Swagger/OpenAPI, GitHub Actions, Spotless |
 
 ---
 
@@ -57,10 +57,11 @@ API REST base para loja de camisetas: healthcheck, JWT, Flyway/MySQL, Swagger e 
 O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLOG.md). Hoje o backend inclui:
 
 - Healthcheck, **OpenAPI/Swagger**, **Flyway** para versionar o banco
-- **Autenticação com JWT** (login, filtro Bearer, endpoint `/api/me`)
+- **Autenticação com JWT** (login, filtro Bearer, endpoint `/api/me`) e **roles ADMIN/CUSTOMER**
+- **CRUD admin de Product** e **catálogo público** (`/api/catalog/products`)
 - **CI** no GitHub Actions (formatação + testes)
 
-Catálogo de produtos, carrinho, pedidos e frontend ainda não estão implementados (ver [Roadmap](#roadmap)).
+Carrinho, pedidos e frontend ainda não estão implementados (ver [Roadmap](#roadmap)).
 
 ---
 
@@ -143,9 +144,21 @@ mvn test
 
 ## Autenticação
 
-- **Login:** `POST /api/auth/login` com JSON `{ "email", "password" }` — resposta inclui `token` (JWT), `email` e `role`.
+- **Login:** `POST /api/auth/login` com JSON `{ "email", "password" }` — resposta inclui `token` (JWT), `email` e `role` (`ADMIN` ou `CUSTOMER`).
 - **Rotas protegidas:** enviar header `Authorization: Bearer <token>`.
 - **Exemplo:** `GET /api/me` retorna o usuário autenticado (email e role).
+- **Roles:** `/api/admin/**` exige `ADMIN` (CUSTOMER → 403; sem token → 401). `/api/catalog/**` é público.
+
+### Product (MVP Opção B)
+
+| Método | Path | Auth |
+|--------|------|------|
+| POST | `/api/admin/products` | ADMIN |
+| GET | `/api/admin/products/{id}` | ADMIN |
+| PUT | `/api/admin/products/{id}` | ADMIN |
+| DELETE | `/api/admin/products/{id}` | ADMIN |
+| GET | `/api/catalog/products?page=&size=` | público |
+| GET | `/api/catalog/products/{id}` | público |
 
 Detalhes de modelo e fluxo estão cobertos por testes no pacote `com.revenda`.
 
@@ -206,7 +219,7 @@ Tshirt-Store/
 
 O planejamento detalhado (B0 → B4, frontend F1, polimento P1) está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
 
-Próximos marcos típicos: autorização por role (ADMIN/CUSTOMER), CRUD de produtos, carrinho e pedidos, depois frontend Next.js.
+Próximos marcos típicos: variantes de produto, carrinho e pedidos, depois frontend Next.js (F1 adiado nesta trilha).
 
 ---
 
