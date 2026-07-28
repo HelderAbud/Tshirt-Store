@@ -25,8 +25,9 @@ Backlog: [`docs/BACKLOG.md`](../BACKLOG.md)
 - Filtro Bearer (`JwtAuthenticationFilter`) + claim `role` no token (HS256)
 - `GET /api/me` para o utilizador autenticado
 - Segredo via `JWT_SECRET` (Base64, ≥ 256 bits) — sem hardcode
+- Seed Flyway `V4` com `admin@demo.local` / `customer@demo.local` (senha demo documentada no README)
 
-**Prova:** `AuthControllerTest`, `JwtServiceTest`, `MeControllerTest`.
+**Prova:** `AuthControllerTest`, `JwtServiceTest`, `MeControllerTest`, `DemoUserSeedLoginTest`.
 
 ---
 

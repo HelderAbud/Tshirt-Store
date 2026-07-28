@@ -150,6 +150,36 @@ mvn test
 - **Exemplo:** `GET /api/me` retorna o usuário autenticado (email e role).
 - **Roles:** `/api/admin/**` exige `ADMIN` (CUSTOMER → 403; sem token → 401). `/api/catalog/**` é público.
 
+### Utilizadores demo (seed Flyway V4)
+
+Só para **local / portfólio** — não use em produção.
+
+| Email | Senha | Role |
+|-------|-------|------|
+| `admin@demo.local` | `Demo12345!` | ADMIN |
+| `customer@demo.local` | `Demo12345!` | CUSTOMER |
+
+### Demo em ~5 minutos
+
+1. `cd infra && docker compose --env-file ../.env up -d` (MySQL host **3308**)
+2. `cd backend && mvn spring-boot:run` (API **8084**; Flyway aplica V1–V4)
+3. Login admin:
+   ```bash
+   curl -s -X POST http://localhost:8084/api/auth/login \
+     -H "Content-Type: application/json" \
+     -d "{\"email\":\"admin@demo.local\",\"password\":\"Demo12345!\"}"
+   ```
+4. Copie o `token` e crie um produto:
+   ```bash
+   curl -s -X POST http://localhost:8084/api/admin/products \
+     -H "Authorization: Bearer <token>" \
+     -H "Content-Type: application/json" \
+     -d "{\"name\":\"Camiseta Demo\",\"sku\":\"DEMO-001\",\"price\":59.90,\"stockQty\":5}"
+   ```
+5. Catálogo público: `GET http://localhost:8084/api/catalog/products`
+
+Swagger: http://localhost:8084/swagger-ui.html
+
 ### Product (MVP Opção B)
 
 | Método | Path | Auth |
