@@ -25,10 +25,10 @@ Dica: sempre execute em PR pequeno.
 - [x] **B2-03** Catálogo público (listagem + detalhe)
 
 ## Marco B3 — Carrinho e pedidos
-- [ ] **B3-01** Carrinho persistido por usuário
-- [ ] **B3-02** Criar pedido a partir do carrinho
-- [ ] **B3-03** Atualizar status do pedido (ADMIN)
-- [ ] **B3-04** Histórico do cliente
+- [x] **B3-01** Carrinho persistido por usuário
+- [x] **B3-02** Criar pedido a partir do carrinho
+- [x] **B3-03** Atualizar status do pedido (ADMIN)
+- [x] **B3-04** Histórico do cliente
 
 ## Marco B4 — Pagamento mock + estoque
 - [ ] **B4-01** Pagamento mock (simulado) + idempotência

@@ -1,5 +1,6 @@
 package com.revenda.controller;
 
+import com.revenda.security.JwtPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,11 @@ public class MeController {
     if (authentication == null || !authentication.isAuthenticated()) {
       throw new IllegalStateException("Usuário não autenticado");
     }
-    String email = (String) authentication.getPrincipal();
+    Object principal = authentication.getPrincipal();
+    String email =
+        principal instanceof JwtPrincipal jwtPrincipal
+            ? jwtPrincipal.email()
+            : principal.toString();
     String role =
         authentication.getAuthorities().stream()
             .findFirst()

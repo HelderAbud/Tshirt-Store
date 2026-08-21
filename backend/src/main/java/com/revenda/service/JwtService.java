@@ -39,13 +39,16 @@ public class JwtService {
 
   public String generateToken(User user) {
     Instant now = Instant.now();
-    return Jwts.builder()
-        .setSubject(user.getEmail())
-        .claim("role", user.getRole().name())
-        .setIssuedAt(Date.from(now))
-        .setExpiration(Date.from(now.plus(1, ChronoUnit.HOURS)))
-        .signWith(signingKey, SignatureAlgorithm.HS256)
-        .compact();
+    var builder =
+        Jwts.builder()
+            .setSubject(user.getEmail())
+            .claim("role", user.getRole().name())
+            .setIssuedAt(Date.from(now))
+            .setExpiration(Date.from(now.plus(1, ChronoUnit.HOURS)));
+    if (user.getId() != null) {
+      builder.claim("userId", user.getId());
+    }
+    return builder.signWith(signingKey, SignatureAlgorithm.HS256).compact();
   }
 
   public Claims parseToken(String token) {
