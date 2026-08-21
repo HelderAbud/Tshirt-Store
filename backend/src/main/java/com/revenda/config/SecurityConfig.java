@@ -35,6 +35,7 @@ public class SecurityConfig {
                         "/swagger-ui.html",
                         "/swagger-ui/**",
                         "/api/auth/login",
+                        "/api/auth/register",
                         "/api/catalog/**")
                     .permitAll()
                     .requestMatchers("/api/admin/**")

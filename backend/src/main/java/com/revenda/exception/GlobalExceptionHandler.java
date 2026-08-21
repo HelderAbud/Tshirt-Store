@@ -25,6 +25,14 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(body);
   }
 
+  @ExceptionHandler(DuplicateEmailException.class)
+  public ResponseEntity<Map<String, Object>> handleDuplicateEmail(DuplicateEmailException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.CONFLICT.value());
+    body.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
   @ExceptionHandler(DuplicateSkuException.class)
   public ResponseEntity<Map<String, Object>> handleDuplicateSku(DuplicateSkuException ex) {
     Map<String, Object> body = new HashMap<>();
