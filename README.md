@@ -18,7 +18,7 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 
 **Destaques (estado real):**
 
-- Auth JWT (`POST /api/auth/login`, `/api/me`) + roles ADMIN/CUSTOMER
+- Auth JWT (`POST /api/auth/register`, `POST /api/auth/login`, `/api/me`) + roles ADMIN/CUSTOMER
 - Admin Product + catálogo público (Opção B)
 - Health + OpenAPI/Swagger + Flyway
 - CI (Spotless + testes)
@@ -58,7 +58,7 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLOG.md). Hoje o backend inclui:
 
 - Healthcheck, **OpenAPI/Swagger**, **Flyway** para versionar o banco
-- **Autenticação com JWT** (login, filtro Bearer, endpoint `/api/me`) e **roles ADMIN/CUSTOMER**
+- **Autenticação com JWT** (cadastro CUSTOMER, login, filtro Bearer, endpoint `/api/me`) e **roles ADMIN/CUSTOMER**
 - **CRUD admin de Product** e **catálogo público** (`/api/catalog/products`)
 - **CI** no GitHub Actions (formatação + testes)
 
@@ -145,8 +145,9 @@ mvn test
 
 ## Autenticação
 
+- **Cadastro:** `POST /api/auth/register` com JSON `{ "email", "password" }` (mínimo 8 caracteres) — cria sempre `CUSTOMER`, responde **201** com `{ "token", "email", "role" }`. Email já existente → **409**.
 - **Login:** `POST /api/auth/login` com JSON `{ "email", "password" }` — resposta inclui `token` (JWT), `email` e `role` (`ADMIN` ou `CUSTOMER`).
-- **Rotas protegidas:** enviar header `Authorization: Bearer <token>`.
+- **Token:** o JWT vai no JSON da resposta. Cookie httpOnly fica para o frontend (ainda adiado). Rotas protegidas usam header `Authorization: Bearer <token>`.
 - **Exemplo:** `GET /api/me` retorna o usuário autenticado (email e role).
 - **Roles:** `/api/admin/**` exige `ADMIN` (CUSTOMER → 403; sem token → 401). `/api/catalog/**` é público.
 

@@ -19,15 +19,16 @@ Backlog: [`docs/BACKLOG.md`](../BACKLOG.md)
 
 ---
 
-## 2. JWT login
+## 2. JWT login + cadastro
 
+- `POST /api/auth/register` → 201 `{ token, email, role: CUSTOMER }`
 - `POST /api/auth/login` → `{ token, email, role }`
 - Filtro Bearer (`JwtAuthenticationFilter`) + claim `role` no token (HS256)
 - `GET /api/me` para o utilizador autenticado
 - Segredo via `JWT_SECRET` (Base64, ≥ 256 bits) — sem hardcode
 - Seed Flyway `V4` com `admin@demo.local` / `customer@demo.local` (senha demo documentada no README)
 
-**Prova:** `AuthControllerTest`, `JwtServiceTest`, `MeControllerTest`, `DemoUserSeedLoginTest`.
+**Prova:** `AuthRegisterTest`, `AuthControllerTest`, `JwtServiceTest`, `MeControllerTest`, `DemoUserSeedLoginTest`.
 
 ---
 
@@ -37,7 +38,7 @@ Backlog: [`docs/BACKLOG.md`](../BACKLOG.md)
 - `SecurityFilterChain`:
   - `/api/admin/**` → `hasRole("ADMIN")`
   - `/api/catalog/**` → `permitAll`
-  - resto autenticado (exceto login/health/Swagger)
+  - resto autenticado (exceto login, register, health, Swagger)
 
 **Prova:** CUSTOMER em `POST /api/admin/products` → **403**; sem token → **401** (`AdminProductAuthorizationTest`).
 

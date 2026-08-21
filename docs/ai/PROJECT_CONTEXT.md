@@ -31,7 +31,7 @@ Frontend: Next.js (App Router) + React + TypeScript + Tailwind + ESLint/Prettier
 - Status corretos: 200/201/204/400/401/403/404/409/422
 
 ## Segurança
-- JWT HS256
-- Front guarda em cookie httpOnly
+- JWT HS256 no JSON (`token`); cookie httpOnly só quando existir frontend
 - Roles: ADMIN e CUSTOMER
-- `/admin/**` requer ADMIN
+- `POST /api/auth/register` público cria só CUSTOMER
+- `/api/admin/**` requer ADMIN

@@ -26,6 +26,7 @@ class OpenApiDocsTest {
         .perform(get("/v3/api-docs"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.openapi").exists())
+        .andExpect(jsonPath("$.paths['/api/auth/register']").exists())
         .andExpect(jsonPath("$.paths['/api/admin/products']").exists())
         .andExpect(jsonPath("$.paths['/api/catalog/products']").exists());
   }
