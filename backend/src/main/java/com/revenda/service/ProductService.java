@@ -38,6 +38,13 @@ public class ProductService {
   }
 
   @Transactional(readOnly = true)
+  public Product getByIdWithVariants(Long id) {
+    return productRepository
+        .findByIdWithVariants(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + id));
+  }
+
+  @Transactional(readOnly = true)
   public Page<Product> list(Pageable pageable) {
     return productRepository.findAll(pageable);
   }
@@ -58,7 +65,7 @@ public class ProductService {
     if (!productRepository.existsById(id)) {
       throw new ResourceNotFoundException("Product not found: " + id);
     }
-    if (productVariantRepository.existsByProductId(id)) {
+    if (productVariantRepository.existsByProduct_Id(id)) {
       throw new ProductHasVariantsException();
     }
     productRepository.deleteById(id);

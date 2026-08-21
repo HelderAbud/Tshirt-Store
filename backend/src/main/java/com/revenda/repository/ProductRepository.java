@@ -3,6 +3,8 @@ package com.revenda.repository;
 import com.revenda.domain.Product;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -11,4 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   boolean existsBySkuAndIdNot(String sku, Long id);
 
   Optional<Product> findBySku(String sku);
+
+  @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.variants WHERE p.id = :id")
+  Optional<Product> findByIdWithVariants(@Param("id") Long id);
 }

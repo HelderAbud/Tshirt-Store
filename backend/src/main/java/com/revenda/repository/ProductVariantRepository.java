@@ -8,7 +8,7 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
   boolean existsBySku(String sku);
 
-  boolean existsByProductId(Long productId);
+  boolean existsByProduct_Id(Long productId);
 
-  List<ProductVariant> findByProductId(Long productId);
+  List<ProductVariant> findByProduct_Id(Long productId);
 }

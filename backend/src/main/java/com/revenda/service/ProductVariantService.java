@@ -1,5 +1,6 @@
 package com.revenda.service;
 
+import com.revenda.domain.Product;
 import com.revenda.domain.ProductVariant;
 import com.revenda.repository.ProductVariantRepository;
 import java.math.BigDecimal;
@@ -22,15 +23,15 @@ public class ProductVariantService {
   @Transactional
   public ProductVariant create(
       Long productId, String color, String size, String sku, BigDecimal price, Integer stockQty) {
-    productService.getById(productId);
+    Product product = productService.getById(productId);
     productService.assertSkuAvailable(sku);
     return productVariantRepository.save(
-        new ProductVariant(productId, color, size, sku, price, stockQty));
+        new ProductVariant(product, color, size, sku, price, stockQty));
   }
 
   @Transactional(readOnly = true)
   public List<ProductVariant> listByProductId(Long productId) {
     productService.getById(productId);
-    return productVariantRepository.findByProductId(productId);
+    return productVariantRepository.findByProduct_Id(productId);
   }
 }

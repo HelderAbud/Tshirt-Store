@@ -2,9 +2,12 @@ package com.revenda.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,8 +20,9 @@ public class ProductVariant {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "product_id", nullable = false)
-  private Long productId;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "product_id", nullable = false)
+  private Product product;
 
   @Column(nullable = false, length = 64)
   private String color;
@@ -44,8 +48,8 @@ public class ProductVariant {
   protected ProductVariant() {}
 
   public ProductVariant(
-      Long productId, String color, String size, String sku, BigDecimal price, Integer stockQty) {
-    this.productId = productId;
+      Product product, String color, String size, String sku, BigDecimal price, Integer stockQty) {
+    this.product = product;
     this.color = color;
     this.size = size;
     this.sku = sku;
@@ -61,7 +65,7 @@ public class ProductVariant {
   }
 
   public Long getProductId() {
-    return productId;
+    return product == null ? null : product.getId();
   }
 
   public String getColor() {

@@ -21,7 +21,7 @@ Dica: sempre execute em PR pequeno.
 
 ## Marco B2 — Catálogo
 - [x] **B2-01** CRUD de Product (ADMIN)
-- [ ] **B2-02** Variações (size/color/sku/price/stock)
+- [x] **B2-02** Variações (size/color/sku/price/stock)
 - [x] **B2-03** Catálogo público (listagem + detalhe)
 
 ## Marco B3 — Carrinho e pedidos

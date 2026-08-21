@@ -1,8 +1,10 @@
 package com.revenda.controller;
 
 import com.revenda.domain.Product;
+import com.revenda.domain.ProductVariant;
 import com.revenda.service.ProductService;
 import java.math.BigDecimal;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -31,8 +33,9 @@ public class CatalogProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<CatalogProductResponse> getById(@PathVariable Long id) {
-    return ResponseEntity.ok(CatalogProductResponse.from(productService.getById(id)));
+  public ResponseEntity<CatalogProductDetailResponse> getById(@PathVariable Long id) {
+    return ResponseEntity.ok(
+        CatalogProductDetailResponse.from(productService.getByIdWithVariants(id)));
   }
 
   public record CatalogProductResponse(
@@ -45,6 +48,41 @@ public class CatalogProductController {
           product.getSku(),
           product.getPrice(),
           product.getStockQty());
+    }
+  }
+
+  public record CatalogVariantResponse(
+      Long id, String color, String size, String sku, BigDecimal price, Integer stockQty) {
+
+    static CatalogVariantResponse from(ProductVariant variant) {
+      return new CatalogVariantResponse(
+          variant.getId(),
+          variant.getColor(),
+          variant.getSize(),
+          variant.getSku(),
+          variant.getPrice(),
+          variant.getStockQty());
+    }
+  }
+
+  public record CatalogProductDetailResponse(
+      Long id,
+      String name,
+      String sku,
+      BigDecimal price,
+      Integer stockQty,
+      List<CatalogVariantResponse> variants) {
+
+    static CatalogProductDetailResponse from(Product product) {
+      List<CatalogVariantResponse> variants =
+          product.getVariants().stream().map(CatalogVariantResponse::from).toList();
+      return new CatalogProductDetailResponse(
+          product.getId(),
+          product.getName(),
+          product.getSku(),
+          product.getPrice(),
+          product.getStockQty(),
+          variants);
     }
   }
 }

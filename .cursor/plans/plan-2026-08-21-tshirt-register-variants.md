@@ -113,7 +113,7 @@ Carrinho, `variantId` no pedido, unificar SKU produto+variante numa constraint g
 | S1 | Register CUSTOMER 201 + 400/409 | HITL após verde | None | Register público; nunca ADMIN; docs B1-01 |
 | S2 | 409 genérico de unique no banco | AFK | S1 | Integrity → 409; SKU duplicado ainda 409 |
 | S3 | ProductVariant POST/GET admin | HITL | S1+S2 | V5 + 201/409/400/403/404 |
-| S4 | Catálogo detalhe com `variants` | HITL | S3 | Detail tem array; list sem variantes |
+| S4 | Catálogo detalhe com `variants` | HITL | S3 | Detail tem array; list sem variantes — feito |
 
 Execução: **S1+S2 = Fatia 3A**. Parar e pedir OK. **S3+S4 = Fatia 2**. Passo 4 (commit/PR) só com “pode commit/PR”.
 
@@ -218,12 +218,12 @@ CREATE INDEX idx_product_variants_product_id ON product_variants(product_id);
 
 **Files:**
 - Modify: `CatalogProductController.java` record para incluir `List<CatalogVariantResponse> variants`
-- Modify: `ProductService.getById` **ou** query no repository com `@EntityGraph` / `JOIN FETCH` só no detalhe
+- Modify: `ProductService.getByIdWithVariants` via `LEFT JOIN FETCH` no detalhe; listagem continua `findAll` sem collection
 - Test: `CatalogProductControllerTest` — detalhe com 0 variantes `$.variants` array vazio; após criar variante, detalhe contém `sku` da variante; `GET /api/catalog/products` **não** exige `$.content[0].variants`
 
-- [ ] `mvn test` + `mvn spotless:check`
-- [ ] Marcar `[x] B2-02` e register em `docs/BACKLOG.md`
-- [ ] **Não commit**
+- [x] `mvn test` + `mvn spotless:check`
+- [x] Marcar `[x] B2-02` e register em `docs/BACKLOG.md`
+- [x] Commit/PR sob HITL
 
 ---
 
