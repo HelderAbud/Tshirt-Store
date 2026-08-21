@@ -68,6 +68,10 @@ public class ProductVariant {
     return product == null ? null : product.getId();
   }
 
+  public Product getProduct() {
+    return product;
+  }
+
   public String getColor() {
     return color;
   }

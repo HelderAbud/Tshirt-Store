@@ -1,8 +1,8 @@
 # Tshirt-Store
 
-> **MVP em curso** (Opção B) — roles ADMIN/CUSTOMER + Product/catálogo. Sem carrinho/frontend nesta fatia. Ver [`TRILHA-DIA-A-DIA.md`](TRILHA-DIA-A-DIA.md) e [`.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md`](.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md).
+> **MVP em curso** (Opção B) — roles, catálogo, carrinho e pedidos. Frontend adiado. Ver [`TRILHA-DIA-A-DIA.md`](TRILHA-DIA-A-DIA.md).
 
-Backend de um **e-commerce de camisetas** (loja de revenda) em MVP. Este repositório contém a **API REST** em **Spring Boot**; carrinho, pedidos e frontend **ainda não** estão no escopo desta trilha.
+Backend de um **e-commerce de camisetas** (loja de revenda) em MVP. API REST em **Spring Boot**; frontend Next.js ainda adiado.
 
 ---
 
@@ -12,14 +12,15 @@ Backend de um **e-commerce de camisetas** (loja de revenda) em MVP. Este reposit
 
 **T-Shirt Store API** *(MVP em curso)*
 
-API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagger e CI. Catálogo Product em implementação; carrinho/pedidos/front adiados.
+API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagger e CI. Catálogo, variantes, carrinho persistido e pedidos; frontend adiado.
 
 **Tecnologias:** Java 21, Spring Boot 3, Spring Security (JWT), MySQL, Flyway, springdoc-openapi, GitHub Actions
 
 **Destaques (estado real):**
 
 - Auth JWT (`POST /api/auth/register`, `POST /api/auth/login`, `/api/me`) + roles ADMIN/CUSTOMER
-- Admin Product + catálogo público (Opção B)
+- Admin Product + variantes + catálogo público
+- Carrinho persistido (`/api/cart`) e pedidos (`POST/GET /api/orders`, PATCH admin status)
 - Health + OpenAPI/Swagger + Flyway
 - CI (Spotless + testes)
 
@@ -29,7 +30,7 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 
 | Campo | Valor |
 |--------|--------|
-| **Pitch em uma linha** | API REST (camisetas) com JWT + roles, Product admin e catálogo público — MVP backend em curso; carrinho/front adiados. |
+| **Pitch em uma linha** | API REST (camisetas) com JWT, catálogo com variantes, carrinho e pedidos — frontend adiado. |
 | **Deploy / demo** | Não publicado ainda |
 | **Vídeo ou post LinkedIn** | Pendente — após fechar DoD Opção B |
 | **Destaque técnico** | JWT roles, Flyway, Swagger/OpenAPI, GitHub Actions, Spotless |
@@ -60,9 +61,10 @@ O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLO
 - Healthcheck, **OpenAPI/Swagger**, **Flyway** para versionar o banco
 - **Autenticação com JWT** (cadastro CUSTOMER, login, filtro Bearer, endpoint `/api/me`) e **roles ADMIN/CUSTOMER**
 - **CRUD admin de Product** e **catálogo público** (`/api/catalog/products`)
+- **Carrinho** (`/api/cart`) e **pedidos** (`/api/orders`) — item só por variante; estoque baixa no B4
 - **CI** no GitHub Actions (formatação + testes)
 
-Carrinho, pedidos e frontend ainda não estão implementados (ver [Roadmap](#roadmap)).
+Frontend ainda não está implementado (ver [Roadmap](#roadmap)).
 
 ---
 
@@ -194,6 +196,18 @@ Swagger: http://localhost:8084/swagger-ui.html
 | GET | `/api/catalog/products?page=&size=` | público (sem `variants`) |
 | GET | `/api/catalog/products/{id}` | público (inclui `variants`) |
 
+### Carrinho e pedidos (B3)
+
+| Método | Path | Auth |
+|--------|------|------|
+| GET | `/api/cart` | autenticado |
+| PUT | `/api/cart/items` | autenticado (`variantId`, `qty` >= 1; substitui qty) |
+| DELETE | `/api/cart/items/{variantId}` | autenticado |
+| POST | `/api/orders` | autenticado (checkout; limpa carrinho; não baixa estoque) |
+| GET | `/api/orders` | autenticado (lista sem items) |
+| GET | `/api/orders/{id}` | autenticado (detalhe; 404 se não for o dono) |
+| PATCH | `/api/admin/orders/{id}/status` | ADMIN (`CREATED` → `CANCELLED`) |
+
 Detalhes de modelo e fluxo estão cobertos por testes no pacote `com.revenda`.
 
 ---
@@ -253,7 +267,7 @@ Tshirt-Store/
 
 O planejamento detalhado (B0 → B4, frontend F1, polimento P1) está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
 
-Próximos marcos típicos: variantes de produto, carrinho e pedidos, depois frontend Next.js (F1 adiado nesta trilha).
+Próximos marcos: pagamento mock e baixa de estoque (B4), depois frontend Next.js (F1 adiado).
 
 ---
 

@@ -29,6 +29,9 @@ class OpenApiDocsTest {
         .andExpect(jsonPath("$.paths['/api/auth/register']").exists())
         .andExpect(jsonPath("$.paths['/api/admin/products/{productId}/variants']").exists())
         .andExpect(jsonPath("$.paths['/api/admin/products']").exists())
-        .andExpect(jsonPath("$.paths['/api/catalog/products']").exists());
+        .andExpect(jsonPath("$.paths['/api/catalog/products']").exists())
+        .andExpect(jsonPath("$.paths['/api/cart']").exists())
+        .andExpect(jsonPath("$.paths['/api/orders']").exists())
+        .andExpect(jsonPath("$.paths['/api/admin/orders/{id}/status']").exists());
   }
 }

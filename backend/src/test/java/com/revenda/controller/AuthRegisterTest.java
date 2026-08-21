@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.revenda.service.JwtService;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +23,33 @@ import org.springframework.test.web.servlet.MvcResult;
 class AuthRegisterTest {
 
   @Autowired private MockMvc mockMvc;
+  @Autowired private JwtService jwtService;
 
   @Test
   @DisplayName("POST /api/auth/register cria CUSTOMER e devolve 201 com token")
   void shouldRegisterCustomerAndReturnCreated() throws Exception {
-    mockMvc
-        .perform(
-            post("/api/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(
-                    """
-                    {"email":"novo@demo.local","password":"Demo12345!"}
-                    """))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.email").value("novo@demo.local"))
-        .andExpect(jsonPath("$.role").value("CUSTOMER"))
-        .andExpect(jsonPath("$.token").isNotEmpty());
+    MvcResult registered =
+        mockMvc
+            .perform(
+                post("/api/auth/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(
+                        """
+                        {"email":"novo@demo.local","password":"Demo12345!"}
+                        """))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.email").value("novo@demo.local"))
+            .andExpect(jsonPath("$.role").value("CUSTOMER"))
+            .andExpect(jsonPath("$.token").isNotEmpty())
+            .andReturn();
+
+    String token =
+        registered
+            .getResponse()
+            .getContentAsString()
+            .replaceAll("(?s).*\"token\"\\s*:\\s*\"([^\"]+)\".*", "$1");
+    Claims claims = jwtService.parseToken(token);
+    org.assertj.core.api.Assertions.assertThat(claims.get("userId", Number.class)).isNotNull();
   }
 
   @Test

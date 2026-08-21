@@ -1,5 +1,6 @@
 package com.revenda.config;
 
+import com.revenda.security.JwtPrincipal;
 import com.revenda.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -37,12 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Claims claims = jwtService.parseToken(token);
         String email = claims.getSubject();
         String role = claims.get("role", String.class);
+        Long userId = null;
+        Number userIdClaim = claims.get("userId", Number.class);
+        if (userIdClaim != null) {
+          userId = userIdClaim.longValue();
+        }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
           var authority = new SimpleGrantedAuthority("ROLE_" + role);
           var authentication =
               new UsernamePasswordAuthenticationToken(
-                  email, null, Collections.singletonList(authority));
+                  new JwtPrincipal(email, userId), null, Collections.singletonList(authority));
           authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }

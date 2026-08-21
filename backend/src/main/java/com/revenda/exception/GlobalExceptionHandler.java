@@ -42,6 +42,32 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
   }
 
+  @ExceptionHandler(EmptyCartException.class)
+  public ResponseEntity<Map<String, Object>> handleEmptyCart(EmptyCartException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.BAD_REQUEST.value());
+    body.put("error", ex.getMessage());
+    return ResponseEntity.badRequest().body(body);
+  }
+
+  @ExceptionHandler(InvalidOrderStatusTransitionException.class)
+  public ResponseEntity<Map<String, Object>> handleInvalidTransition(
+      InvalidOrderStatusTransitionException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.CONFLICT.value());
+    body.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
+  @ExceptionHandler(InsufficientStockException.class)
+  public ResponseEntity<Map<String, Object>> handleInsufficientStock(
+      InsufficientStockException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.CONFLICT.value());
+    body.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
   @ExceptionHandler(ProductHasVariantsException.class)
   public ResponseEntity<Map<String, Object>> handleProductHasVariants(
       ProductHasVariantsException ex) {
