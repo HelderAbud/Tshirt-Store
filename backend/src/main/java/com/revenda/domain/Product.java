@@ -92,4 +92,9 @@ public class Product {
     this.stockQty = stockQty;
     this.updatedAt = Instant.now();
   }
+
+  public void syncStockQty(int stockQty) {
+    this.stockQty = stockQty;
+    this.updatedAt = Instant.now();
+  }
 }

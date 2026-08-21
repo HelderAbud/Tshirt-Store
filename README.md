@@ -61,7 +61,7 @@ O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLO
 - Healthcheck, **OpenAPI/Swagger**, **Flyway** para versionar o banco
 - **Autenticação com JWT** (cadastro CUSTOMER, login, filtro Bearer, endpoint `/api/me`) e **roles ADMIN/CUSTOMER**
 - **CRUD admin de Product** e **catálogo público** (`/api/catalog/products`)
-- **Carrinho** (`/api/cart`) e **pedidos** (`/api/orders`) — item só por variante; estoque baixa no B4
+- **Carrinho** (`/api/cart`) e **pedidos** (`/api/orders`) — item só por variante; estoque baixa no pagamento mock
 - **CI** no GitHub Actions (formatação + testes)
 
 Frontend ainda não está implementado (ver [Roadmap](#roadmap)).
@@ -204,6 +204,7 @@ Swagger: http://localhost:8084/swagger-ui.html
 | PUT | `/api/cart/items` | autenticado (`variantId`, `qty` >= 1; substitui qty) |
 | DELETE | `/api/cart/items/{variantId}` | autenticado |
 | POST | `/api/orders` | autenticado (checkout; limpa carrinho; não baixa estoque) |
+| POST | `/api/orders/{id}/pay` | dono + header `Idempotency-Key` (mock sempre aprova; baixa variante e alinha `stockQty` do produto à soma das variantes) |
 | GET | `/api/orders` | autenticado (lista sem items) |
 | GET | `/api/orders/{id}` | autenticado (detalhe; 404 se não for o dono) |
 | PATCH | `/api/admin/orders/{id}/status` | ADMIN (`CREATED` → `CANCELLED`) |
@@ -267,7 +268,7 @@ Tshirt-Store/
 
 O planejamento detalhado (B0 → B4, frontend F1, polimento P1) está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
 
-Próximos marcos: pagamento mock e baixa de estoque (B4), depois frontend Next.js (F1 adiado).
+Próximos marcos: frontend Next.js (F1 adiado).
 
 ---
 

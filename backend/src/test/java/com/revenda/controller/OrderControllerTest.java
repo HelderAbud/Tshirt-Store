@@ -252,4 +252,169 @@ class OrderControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isEmpty());
   }
+
+  private long checkoutQty(String token, long variantId, int qty) throws Exception {
+    mockMvc
+        .perform(
+            put("/api/cart/items")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"variantId\":" + variantId + ",\"qty\":" + qty + "}"))
+        .andExpect(status().isOk());
+    return objectMapper
+        .readTree(
+            mockMvc
+                .perform(post("/api/orders").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString())
+        .get("id")
+        .asLong();
+  }
+
+  @Test
+  @DisplayName("Pay baixa estoque, replay da mesma chave não baixa de novo")
+  void shouldPayDecrementStockAndReplayIdempotencyKey() throws Exception {
+    String token = register("order-pay-" + UUID.randomUUID() + "@demo.local");
+    CatalogIds ids = createVariant(8);
+    long orderId = checkoutQty(token, ids.variantId(), 2);
+    String key = "pay-" + UUID.randomUUID();
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderId + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+        .andExpect(status().isBadRequest());
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderId + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .header("Idempotency-Key", key))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("PAID"))
+        .andExpect(jsonPath("$.items[0].qty").value(2));
+
+    mockMvc
+        .perform(
+            get("/api/admin/products/" + ids.productId() + "/variants")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].stockQty").value(6));
+
+    mockMvc
+        .perform(get("/api/catalog/products/" + ids.productId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.stockQty").value(6))
+        .andExpect(jsonPath("$.variants[0].stockQty").value(6));
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderId + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .header("Idempotency-Key", key))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("PAID"));
+
+    mockMvc
+        .perform(
+            get("/api/admin/products/" + ids.productId() + "/variants")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].stockQty").value(6));
+
+    mockMvc
+        .perform(get("/api/catalog/products/" + ids.productId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.stockQty").value(6));
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderId + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .header("Idempotency-Key", "other-" + UUID.randomUUID()))
+        .andExpect(status().isConflict());
+
+    mockMvc
+        .perform(
+            patch("/api/admin/orders/" + orderId + "/status")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"status\":\"CANCELLED\"}"))
+        .andExpect(status().isConflict());
+  }
+
+  @Test
+  @DisplayName("Pay de pedido alheio 404; chave reusada noutro pedido 409; pay após cancel 409")
+  void shouldIsolatePayAndRejectCancelled() throws Exception {
+    String tokenA = register("order-pay-a-" + UUID.randomUUID() + "@demo.local");
+    String tokenB = register("order-pay-b-" + UUID.randomUUID() + "@demo.local");
+    CatalogIds ids = createVariant(5);
+    long orderA = checkoutQty(tokenA, ids.variantId(), 1);
+    long orderA2 = checkoutQty(tokenA, ids.variantId(), 1);
+    String sharedKey = "shared-" + UUID.randomUUID();
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderA + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenB)
+                .header("Idempotency-Key", "b-on-a"))
+        .andExpect(status().isNotFound());
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderA + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                .header("Idempotency-Key", sharedKey))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderA2 + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                .header("Idempotency-Key", sharedKey))
+        .andExpect(status().isConflict());
+
+    CatalogIds cancelIds = createVariant(3);
+    long toCancel = checkoutQty(tokenA, cancelIds.variantId(), 1);
+    mockMvc
+        .perform(
+            patch("/api/admin/orders/" + toCancel + "/status")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"status\":\"CANCELLED\"}"))
+        .andExpect(status().isOk());
+    mockMvc
+        .perform(
+            post("/api/orders/" + toCancel + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                .header("Idempotency-Key", "pay-cancelled"))
+        .andExpect(status().isConflict());
+  }
+
+  @Test
+  @DisplayName("Dois checkouts no mesmo stock: segundo pay fica sem estoque")
+  void shouldRejectSecondPayWhenStockConsumed() throws Exception {
+    String tokenA = register("order-race-a-" + UUID.randomUUID() + "@demo.local");
+    String tokenB = register("order-race-b-" + UUID.randomUUID() + "@demo.local");
+    CatalogIds ids = createVariant(2);
+    long orderA = checkoutQty(tokenA, ids.variantId(), 2);
+    long orderB = checkoutQty(tokenB, ids.variantId(), 2);
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderA + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                .header("Idempotency-Key", "a"))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(
+            post("/api/orders/" + orderB + "/pay")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenB)
+                .header("Idempotency-Key", "b"))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.error").value("Insufficient stock"));
+  }
 }

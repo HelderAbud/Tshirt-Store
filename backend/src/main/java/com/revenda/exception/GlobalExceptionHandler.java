@@ -26,6 +26,24 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(body);
   }
 
+  @ExceptionHandler(MissingIdempotencyKeyException.class)
+  public ResponseEntity<Map<String, Object>> handleMissingIdempotencyKey(
+      MissingIdempotencyKeyException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.BAD_REQUEST.value());
+    body.put("error", ex.getMessage());
+    return ResponseEntity.badRequest().body(body);
+  }
+
+  @ExceptionHandler(IdempotencyConflictException.class)
+  public ResponseEntity<Map<String, Object>> handleIdempotencyConflict(
+      IdempotencyConflictException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.CONFLICT.value());
+    body.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
   @ExceptionHandler(DuplicateEmailException.class)
   public ResponseEntity<Map<String, Object>> handleDuplicateEmail(DuplicateEmailException ex) {
     Map<String, Object> body = new HashMap<>();

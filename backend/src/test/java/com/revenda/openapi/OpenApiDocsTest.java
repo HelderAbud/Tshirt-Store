@@ -32,6 +32,7 @@ class OpenApiDocsTest {
         .andExpect(jsonPath("$.paths['/api/catalog/products']").exists())
         .andExpect(jsonPath("$.paths['/api/cart']").exists())
         .andExpect(jsonPath("$.paths['/api/orders']").exists())
+        .andExpect(jsonPath("$.paths['/api/orders/{id}/pay']").exists())
         .andExpect(jsonPath("$.paths['/api/admin/orders/{id}/status']").exists());
   }
 }

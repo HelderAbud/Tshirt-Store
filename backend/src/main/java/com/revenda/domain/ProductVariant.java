@@ -1,5 +1,6 @@
 package com.revenda.domain;
 
+import com.revenda.exception.InsufficientStockException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -90,6 +91,14 @@ public class ProductVariant {
 
   public Integer getStockQty() {
     return stockQty;
+  }
+
+  public void decreaseStock(int qty) {
+    if (qty > this.stockQty) {
+      throw new InsufficientStockException();
+    }
+    this.stockQty = this.stockQty - qty;
+    this.updatedAt = Instant.now();
   }
 
   public Instant getCreatedAt() {
