@@ -97,4 +97,9 @@ public class ShopOrder {
     this.status = OrderStatus.CANCELLED;
     this.updatedAt = Instant.now();
   }
+
+  public void markPaid() {
+    this.status = OrderStatus.PAID;
+    this.updatedAt = Instant.now();
+  }
 }

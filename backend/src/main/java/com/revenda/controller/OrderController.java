@@ -2,6 +2,7 @@ package com.revenda.controller;
 
 import com.revenda.domain.OrderItem;
 import com.revenda.domain.ShopOrder;
+import com.revenda.exception.MissingIdempotencyKeyException;
 import com.revenda.service.OrderService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +41,16 @@ public class OrderController {
   @GetMapping("/{id}")
   public ResponseEntity<OrderDetailResponse> getMine(@PathVariable Long id) {
     return ResponseEntity.ok(OrderDetailResponse.from(orderService.getMine(id)));
+  }
+
+  @PostMapping("/{id}/pay")
+  public ResponseEntity<OrderDetailResponse> pay(
+      @PathVariable Long id,
+      @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey) {
+    if (idempotencyKey == null || idempotencyKey.isBlank() || idempotencyKey.length() > 128) {
+      throw new MissingIdempotencyKeyException();
+    }
+    return ResponseEntity.ok(OrderDetailResponse.from(orderService.pay(id, idempotencyKey.trim())));
   }
 
   public record OrderSummaryResponse(Long id, String status, BigDecimal total) {

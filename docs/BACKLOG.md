@@ -31,8 +31,8 @@ Dica: sempre execute em PR pequeno.
 - [x] **B3-04** Histórico do cliente
 
 ## Marco B4 — Pagamento mock + estoque
-- [ ] **B4-01** Pagamento mock (simulado) + idempotência
-- [ ] **B4-02** Baixa de estoque ao pagar
+- [x] **B4-01** Pagamento mock (simulado) + idempotência
+- [x] **B4-02** Baixa de estoque ao pagar
 
 ## Marco F1 — Frontend Next.js (MVP)
 - [ ] **F1-01** Setup Next + páginas base — *adiado (Opção B)*

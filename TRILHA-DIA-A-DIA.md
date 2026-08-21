@@ -3,7 +3,7 @@
 > **Metodologia:** [Helder Method v1.2](../Agentes/helder-method-v1.2-resumo-compartilhavel.md) + [skills-pessoal](../Agentes/skills-pessoal/skills-pessoal/README-pt_br.md) ([WORKFLOW](../Agentes/skills-pessoal/skills-pessoal/WORKFLOW.md))  
 > **Iniciativa:** **MVP mínimo** (auth + catálogo) — Opção B (2026-07-27)  
 > **Triagem Helder:** **Normal** (`tdd` + `mvn test`)  
-> **Estado:** B0–B3 ✅ · B4+/F1 pendentes ([`docs/BACKLOG.md`](docs/BACKLOG.md))  
+> **Estado:** B0–B4 ✅ · F1 pendente ([`docs/BACKLOG.md`](docs/BACKLOG.md))  
 > **Custo:** R$ 0  
 > **Plano ativo:** [`.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md`](.cursor/plans/plan-2026-07-27-tshirt-mvp-b.md)
 
