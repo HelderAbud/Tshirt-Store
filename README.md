@@ -189,8 +189,10 @@ Swagger: http://localhost:8084/swagger-ui.html
 | GET | `/api/admin/products/{id}` | ADMIN |
 | PUT | `/api/admin/products/{id}` | ADMIN |
 | DELETE | `/api/admin/products/{id}` | ADMIN |
-| GET | `/api/catalog/products?page=&size=` | público |
-| GET | `/api/catalog/products/{id}` | público |
+| POST | `/api/admin/products/{id}/variants` | ADMIN |
+| GET | `/api/admin/products/{id}/variants` | ADMIN |
+| GET | `/api/catalog/products?page=&size=` | público (sem `variants`) |
+| GET | `/api/catalog/products/{id}` | público (inclui `variants`) |
 
 Detalhes de modelo e fluxo estão cobertos por testes no pacote `com.revenda`.
 

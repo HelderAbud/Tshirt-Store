@@ -5,9 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -34,6 +37,9 @@ public class Product {
 
   @Column(name = "updated_at", nullable = false)
   private Instant updatedAt;
+
+  @OneToMany(mappedBy = "product")
+  private List<ProductVariant> variants = new ArrayList<>();
 
   protected Product() {}
 
@@ -73,6 +79,10 @@ public class Product {
 
   public Instant getUpdatedAt() {
     return updatedAt;
+  }
+
+  public List<ProductVariant> getVariants() {
+    return variants;
   }
 
   public void update(String name, String sku, BigDecimal price, Integer stockQty) {

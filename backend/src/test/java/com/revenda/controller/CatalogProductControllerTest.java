@@ -63,13 +63,75 @@ class CatalogProductControllerTest {
         .perform(get("/api/catalog/products"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.content").isArray())
-        .andExpect(jsonPath("$.content[?(@.sku=='TSHIRT-CAT-01')]").exists());
+        .andExpect(jsonPath("$.content[?(@.sku=='TSHIRT-CAT-01')]").exists())
+        .andExpect(jsonPath("$.content[?(@.sku=='TSHIRT-CAT-01')].variants").doesNotExist());
 
     mockMvc
         .perform(get("/api/catalog/products/" + id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value("Camiseta Catálogo"))
-        .andExpect(jsonPath("$.sku").value("TSHIRT-CAT-01"));
+        .andExpect(jsonPath("$.sku").value("TSHIRT-CAT-01"))
+        .andExpect(jsonPath("$.variants").isArray())
+        .andExpect(jsonPath("$.variants").isEmpty());
+  }
+
+  @Test
+  @DisplayName("Detalhe do catálogo inclui variantes sem exigir auth")
+  void shouldIncludeVariantsOnCatalogDetail() throws Exception {
+    MvcResult created =
+        mockMvc
+            .perform(
+                post("/api/admin/products")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(
+                        """
+                        {
+                          "name": "Camiseta Com Variante",
+                          "sku": "TSHIRT-CAT-VAR-P",
+                          "price": 39.90,
+                          "stockQty": 5
+                        }
+                        """))
+            .andExpect(status().isCreated())
+            .andReturn();
+    Long id =
+        Long.parseLong(
+            created
+                .getResponse()
+                .getContentAsString()
+                .replaceAll("(?s).*\"id\"\\s*:\\s*(\\d+).*", "$1"));
+
+    mockMvc
+        .perform(
+            post("/api/admin/products/" + id + "/variants")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {
+                      "color": "Azul",
+                      "size": "M",
+                      "sku": "TSHIRT-CAT-VAR-M",
+                      "price": 44.90,
+                      "stockQty": 2
+                    }
+                    """))
+        .andExpect(status().isCreated());
+
+    mockMvc
+        .perform(get("/api/catalog/products/" + id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.variants[0].sku").value("TSHIRT-CAT-VAR-M"))
+        .andExpect(jsonPath("$.variants[0].color").value("Azul"))
+        .andExpect(jsonPath("$.variants[0].size").value("M"))
+        .andExpect(jsonPath("$.variants[0].price").value(44.90))
+        .andExpect(jsonPath("$.variants[0].stockQty").value(2));
+
+    mockMvc
+        .perform(get("/api/catalog/products"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content[?(@.sku=='TSHIRT-CAT-VAR-P')].variants").doesNotExist());
   }
 
   @Test
