@@ -46,7 +46,7 @@ Dica: sempre execute em PR pequeno.
 - [ ] **A1-04** (opcional) Migrar SPA para Next.js quando `npm install` estiver ok
 
 ## Marco F2 — Vitrine cliente (fase 2)
-- [ ] **F2-01** UI catálogo/carrinho/checkout sobre `/api/catalog` e `/api/cart`
+- [x] **F2-01** UI catálogo/carrinho/checkout sobre `/api/catalog` e `/api/cart`
 
 ## Marco F3 — NF-e (fase 3)
 - [ ] **F3-01** Import/emissão mínima + impacto em estoque
