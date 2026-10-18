@@ -99,7 +99,7 @@ class OrderControllerTest {
     mockMvc
         .perform(post("/api/orders").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.error").value("Cart is empty"));
+        .andExpect(jsonPath("$.detail").value("Cart is empty"));
   }
 
   @Test
@@ -233,7 +233,7 @@ class OrderControllerTest {
     mockMvc
         .perform(post("/api/orders").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.error").value("Insufficient stock"));
+        .andExpect(jsonPath("$.detail").value("Insufficient stock"));
 
     mockMvc
         .perform(get("/api/cart").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
@@ -415,6 +415,6 @@ class OrderControllerTest {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenB)
                 .header("Idempotency-Key", "b"))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.error").value("Insufficient stock"));
+        .andExpect(jsonPath("$.detail").value("Insufficient stock"));
   }
 }

@@ -1,8 +1,8 @@
 # Tshirt-Store
 
-> **MVP em curso** (Opção B) — roles, catálogo, carrinho e pedidos. Frontend adiado. Ver [`TRILHA-DIA-A-DIA.md`](TRILHA-DIA-A-DIA.md).
+> **Loja única de revenda de roupas** — API Spring + backoffice (estoque, venda de balcão, dashboard). Vitrine cliente e NF-e nas fases 2–3. Ver [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
-Backend de um **e-commerce de camisetas** (loja de revenda) em MVP. API REST em **Spring Boot**; frontend Next.js ainda adiado.
+Backend + SPA de gestão para uma loja de camisetas/roupas. API REST em **Spring Boot**; front admin em [`frontend/`](frontend/).
 
 ---
 
@@ -10,18 +10,18 @@ Backend de um **e-commerce de camisetas** (loja de revenda) em MVP. API REST em 
 
 **GitHub:** https://github.com/HelderAbud/Tshirt-Store
 
-**T-Shirt Store API** *(MVP em curso)*
+**T-Shirt Store** *(loja única — API + backoffice)*
 
-API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagger e CI. Catálogo, variantes, carrinho persistido e pedidos; frontend adiado.
+API e painel admin: JWT, catálogo com variantes, carrinho/pedidos e-commerce, venda de balcão, ajuste de estoque, dashboard de receita diária, Problem Details e Actuator.
 
-**Tecnologias:** Java 21, Spring Boot 3, Spring Security (JWT), MySQL, Flyway, springdoc-openapi, GitHub Actions
+**Tecnologias:** Java 21, Spring Boot 3, Spring Security (JWT), MySQL, Flyway, springdoc-openapi, Actuator, SPA admin (HTML/JS)
 
 **Destaques (estado real):**
 
-- Auth JWT (`POST /api/auth/register`, `POST /api/auth/login`, `/api/me`) + roles ADMIN/CUSTOMER
-- Admin Product + variantes + catálogo público
-- Carrinho persistido (`/api/cart`) e pedidos (`POST/GET /api/orders`, PATCH admin status)
-- Health + OpenAPI/Swagger + Flyway
+- Auth JWT + roles ADMIN/CUSTOMER
+- Catálogo, variantes, carrinho, pedidos e pagamento mock
+- Backoffice: `/api/admin/inventory/*`, `/api/admin/sales` (+ `/daily`) e UI em `frontend/`
+- Erros RFC 7807 + Actuator health/info/metrics
 - CI (Spotless + testes)
 
 ---
@@ -30,11 +30,11 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 
 | Campo | Valor |
 |--------|--------|
-| **Pitch em uma linha** | API REST (camisetas) com JWT, catálogo com variantes, carrinho e pedidos — frontend adiado. |
-| **Deploy / demo** | Não publicado ainda |
-| **Vídeo ou post LinkedIn** | Pendente — após fechar DoD Opção B |
-| **Destaque técnico** | JWT roles, Flyway, Swagger/OpenAPI, GitHub Actions, Spotless |
-| **Etapas do MVP** | [`docs/portfolio/etapas.md`](docs/portfolio/etapas.md) · screenshot [`docs/screenshots/swagger-products.png`](docs/screenshots/swagger-products.png) |
+| **Pitch em uma linha** | Loja única de roupas: API + backoffice (estoque, venda, gráfico) — vitrine e NF-e depois. |
+| **Deploy / demo** | Local: API **8084**, MySQL **3308**, front **3000** |
+| **Vídeo ou post LinkedIn** | Pendente — após merge A1 |
+| **Destaque técnico** | JWT, Flyway, venda balcão + movimentos, Problem Details, Actuator |
+| **Etapas** | [`docs/portfolio/etapas.md`](docs/portfolio/etapas.md) · smoke [`docs/grill-logs/validation-2026-09-04-admin-backoffice.md`](docs/grill-logs/validation-2026-09-04-admin-backoffice.md) |
 
 ---
 
@@ -49,6 +49,7 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 - [Testes e qualidade](#testes-e-qualidade)
 - [CI](#ci)
 - [Estrutura do repositório](#estrutura-do-repositório)
+- [Trade-offs](#trade-offs)
 - [Roadmap](#roadmap)
 - [Licença](#licença)
 
@@ -56,15 +57,17 @@ API REST para loja de camisetas: healthcheck, JWT com roles, Flyway/MySQL, Swagg
 
 ## Visão geral
 
-O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLOG.md). Hoje o backend inclui:
+O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLOG.md). O backend inclui:
 
 - Healthcheck, **OpenAPI/Swagger**, **Flyway** para versionar o banco
 - **Autenticação com JWT** (cadastro CUSTOMER, login, filtro Bearer, endpoint `/api/me`) e **roles ADMIN/CUSTOMER**
 - **CRUD admin de Product** e **catálogo público** (`/api/catalog/products`)
 - **Carrinho** (`/api/cart`) e **pedidos** (`/api/orders`) — item só por variante; estoque baixa no pagamento mock
+- **Problem Details** (RFC 7807) e **Actuator** (health/info/metrics)
+- **Backoffice:** ajuste de estoque, venda de balcão, série diária + SPA em `frontend/`
 - **CI** no GitHub Actions (formatação + testes)
 
-Frontend ainda não está implementado (ver [Roadmap](#roadmap)).
+Vitrine cliente e NF-e estão nas fases 2–3 do backlog.
 
 ---
 
@@ -78,6 +81,7 @@ Frontend ainda não está implementado (ver [Roadmap](#roadmap)).
 | Persistência | Spring Data JPA, MySQL 8 |
 | Migrações | Flyway |
 | Segurança | Spring Security, JWT (JJWT), BCrypt |
+| Observabilidade | Spring Boot Actuator, Micrometer |
 | Documentação API | springdoc-openapi (Swagger UI) |
 | Build | Maven |
 | Testes | JUnit 5, MockMvc, Mockito |
@@ -141,7 +145,31 @@ mvn test
 | OpenAPI (JSON) | http://localhost:8084/v3/api-docs |
 | Swagger UI | http://localhost:8084/swagger-ui.html |
 | Health | `GET` http://localhost:8084/api/health |
-| Actuator (health/info) | http://localhost:8084/actuator |
+| Actuator health / info | http://localhost:8084/actuator/health · `/actuator/info` (públicos) |
+| Actuator metrics | http://localhost:8084/actuator/metrics (**ADMIN** + JWT) |
+
+### Observabilidade
+
+Actuator expõe `health` (com probes liveness/readiness), `info` e `metrics`. Detalhes de componentes do health só com utilizador autenticado (`show-details: when_authorized`).
+
+### Backoffice (fase 1)
+
+| Método | Path | Auth |
+|--------|------|------|
+| POST | `/api/admin/inventory/adjust` | ADMIN (`variantId`, `delta`, `reason`) |
+| GET | `/api/admin/inventory/stock` | ADMIN |
+| GET | `/api/admin/inventory/low-stock?threshold=` | ADMIN |
+| POST | `/api/admin/sales` | ADMIN (itens com `variantId`, `qty`, `unitPrice`) |
+| GET | `/api/admin/sales?from=&to=` | ADMIN (datas ISO) |
+| GET | `/api/admin/sales/daily?from=&to=` | ADMIN |
+
+UI: [`frontend/README.md`](frontend/README.md) — `python -m http.server 3000` → http://localhost:3000  
+
+**Nota:** pedidos e-commerce (`/api/orders` + pay) e vendas de balcão (`/api/admin/sales`) são fluxos separados de baixa de estoque.
+
+### Erros (Problem Details)
+
+Respostas de erro de negócio/validação seguem [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) via `ProblemDetail` do Spring (`type`, `title`, `status`, `detail`). Validação Bean Validation usa `detail: "Validation failed"` e a extensão `errors` (mapa campo → mensagem).
 
 ---
 
@@ -233,6 +261,12 @@ Para aplicar formatação automaticamente:
 mvn spotless:apply
 ```
 
+Checklist rápido após mudanças:
+
+1. `mvn test` e `mvn spotless:check` verdes
+2. Smoke: login demo → criar produto → listar catálogo
+3. Conferir Swagger em http://localhost:8084/swagger-ui.html
+
 ---
 
 ## CI
@@ -255,6 +289,7 @@ Tshirt-Store/
 │       ├── service/         # Regras e JWT
 │       ├── repository/      # Spring Data JPA
 │       ├── domain/          # Entidades
+│       ├── exception/       # Problem Details (RFC 7807)
 │       └── config/          # Segurança, filtros JWT
 ├── docs/                    # Backlog, workflow, arquitetura
 ├── infra/
@@ -264,11 +299,28 @@ Tshirt-Store/
 
 ---
 
+## Trade-offs
+
+Decisões conscientes do MVP (honestidade de portfólio):
+
+| Escolha | Porquê | Limite |
+|---------|--------|--------|
+| Backend-only (F1 adiado) | Evitar overlap com LojApp e focar API testável | Sem UI de loja |
+| Pagamento mock + idempotência | Prova fluxo de estoque sem gateway real | Não processa dinheiro |
+| MySQL local + H2 nos testes | Setup simples e CI rápido | Sem Testcontainers neste MVP |
+| JWT no body (sem cookie httpOnly) | Simples para Swagger/curl; cookie fica para o front | Menos alinhado a SPA real |
+| Actuator metrics só ADMIN | Evita vazamento público de métricas | Sem Prometheus/Grafana ainda |
+| Sem deploy público | Custo zero; demo local com seed | Recrutador precisa subir local |
+
+---
+
 ## Roadmap
 
-O planejamento detalhado (B0 → B4, frontend F1, polimento P1) está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
+O planejamento detalhado está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
 
-Próximos marcos: frontend Next.js (F1 adiado).
+- **Feito:** B0–B4 · P1 · A1 backoffice (API + SPA)
+- **Próximo:** F2 vitrine cliente · F3 NF-e
+- **Opcional:** A1-04 Next.js quando npm/rede permitir
 
 ---
 

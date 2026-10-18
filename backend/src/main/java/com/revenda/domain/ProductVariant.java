@@ -101,6 +101,15 @@ public class ProductVariant {
     this.updatedAt = Instant.now();
   }
 
+  public void adjustStock(int delta) {
+    int next = this.stockQty + delta;
+    if (next < 0) {
+      throw new InsufficientStockException();
+    }
+    this.stockQty = next;
+    this.updatedAt = Instant.now();
+  }
+
   public Instant getCreatedAt() {
     return createdAt;
   }

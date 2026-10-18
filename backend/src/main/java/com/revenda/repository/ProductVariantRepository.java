@@ -20,4 +20,8 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("SELECT v FROM ProductVariant v WHERE v.id = :id")
   Optional<ProductVariant> findByIdForUpdate(@Param("id") Long id);
+
+  List<ProductVariant> findByStockQtyLessThanEqualOrderByStockQtyAsc(Integer threshold);
+
+  List<ProductVariant> findAllByOrderBySkuAsc();
 }

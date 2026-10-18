@@ -25,12 +25,16 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
+        .cors(cors -> {})
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
                 auth.requestMatchers(
                         "/api/health",
+                        "/actuator/health",
+                        "/actuator/health/**",
+                        "/actuator/info",
                         "/v3/api-docs/**",
                         "/swagger-ui.html",
                         "/swagger-ui/**",
@@ -38,6 +42,8 @@ public class SecurityConfig {
                         "/api/auth/register",
                         "/api/catalog/**")
                     .permitAll()
+                    .requestMatchers("/actuator/metrics", "/actuator/metrics/**")
+                    .hasRole("ADMIN")
                     .requestMatchers("/api/admin/**")
                     .hasRole("ADMIN")
                     .anyRequest()

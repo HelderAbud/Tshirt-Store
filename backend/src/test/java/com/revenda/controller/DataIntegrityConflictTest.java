@@ -65,7 +65,8 @@ class DataIntegrityConflictTest {
                     """))
         .andExpect(status().isConflict())
         .andExpect(jsonPath("$.status").value(409))
-        .andExpect(jsonPath("$.error").value("Resource already exists"))
-        .andExpect(jsonPath("$.error").value(not(containsString("Duplicate entry"))));
+        .andExpect(jsonPath("$.title").value("Conflict"))
+        .andExpect(jsonPath("$.detail").value("Resource already exists"))
+        .andExpect(jsonPath("$.detail").value(not(containsString("Duplicate entry"))));
   }
 }
