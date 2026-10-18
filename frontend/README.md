@@ -28,3 +28,9 @@ CORS da API libera `http://localhost:3000`.
 4. Dashboard: barra do dia com a receita  
 
 Variantes vazias: crie produto/variante no Swagger (`/api/admin/products`).
+
+## Vitrine do cliente
+
+Com a API em `http://localhost:8084` e o servidor estático desta pasta na porta 3000, abra http://localhost:3000/store.html
+
+O painel admin continua em http://localhost:3000/
