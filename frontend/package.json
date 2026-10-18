@@ -1,0 +1,18 @@
+{
+  "name": "tshirt-store-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SPA estática em index.html/app.js é a UI fase 1. package.json/src reservados para Next.js opcional (A1-04) quando npm estiver disponível.",
+  "scripts": {
+    "serve": "python -m http.server 3000",
+    "dev": "echo Use: python -m http.server 3000 (SPA estática). Next opcional após npm install.",
+    "build:next": "next build",
+    "dev:next": "next dev -p 3000"
+  },
+  "optionalDependencies": {
+    "next": "14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7"
+  }
+}

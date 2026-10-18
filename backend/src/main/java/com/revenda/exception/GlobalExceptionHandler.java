@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,102 +14,76 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
-    Map<String, String> fields = new HashMap<>();
+  public ResponseEntity<ProblemDetail> handleValidation(MethodArgumentNotValidException ex) {
+    Map<String, String> errors = new HashMap<>();
     ex.getBindingResult()
         .getFieldErrors()
-        .forEach(error -> fields.put(error.getField(), error.getDefaultMessage()));
+        .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("error", "Validation failed");
-    body.put("fields", fields);
-    return ResponseEntity.badRequest().body(body);
+    ProblemDetail problem =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
+    problem.setProperty("errors", errors);
+    return ResponseEntity.badRequest().body(problem);
   }
 
   @ExceptionHandler(MissingIdempotencyKeyException.class)
-  public ResponseEntity<Map<String, Object>> handleMissingIdempotencyKey(
+  public ResponseEntity<ProblemDetail> handleMissingIdempotencyKey(
       MissingIdempotencyKeyException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.badRequest().body(body);
+    return problem(HttpStatus.BAD_REQUEST, ex.getMessage());
   }
 
   @ExceptionHandler(IdempotencyConflictException.class)
-  public ResponseEntity<Map<String, Object>> handleIdempotencyConflict(
-      IdempotencyConflictException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  public ResponseEntity<ProblemDetail> handleIdempotencyConflict(IdempotencyConflictException ex) {
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(DuplicateEmailException.class)
-  public ResponseEntity<Map<String, Object>> handleDuplicateEmail(DuplicateEmailException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  public ResponseEntity<ProblemDetail> handleDuplicateEmail(DuplicateEmailException ex) {
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(DuplicateSkuException.class)
-  public ResponseEntity<Map<String, Object>> handleDuplicateSku(DuplicateSkuException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  public ResponseEntity<ProblemDetail> handleDuplicateSku(DuplicateSkuException ex) {
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(EmptyCartException.class)
-  public ResponseEntity<Map<String, Object>> handleEmptyCart(EmptyCartException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.badRequest().body(body);
+  public ResponseEntity<ProblemDetail> handleEmptyCart(EmptyCartException ex) {
+    return problem(HttpStatus.BAD_REQUEST, ex.getMessage());
+  }
+
+  @ExceptionHandler(InvalidSaleException.class)
+  public ResponseEntity<ProblemDetail> handleInvalidSale(InvalidSaleException ex) {
+    return problem(HttpStatus.BAD_REQUEST, ex.getMessage());
   }
 
   @ExceptionHandler(InvalidOrderStatusTransitionException.class)
-  public ResponseEntity<Map<String, Object>> handleInvalidTransition(
+  public ResponseEntity<ProblemDetail> handleInvalidTransition(
       InvalidOrderStatusTransitionException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(InsufficientStockException.class)
-  public ResponseEntity<Map<String, Object>> handleInsufficientStock(
-      InsufficientStockException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  public ResponseEntity<ProblemDetail> handleInsufficientStock(InsufficientStockException ex) {
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(ProductHasVariantsException.class)
-  public ResponseEntity<Map<String, Object>> handleProductHasVariants(
-      ProductHasVariantsException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  public ResponseEntity<ProblemDetail> handleProductHasVariants(ProductHasVariantsException ex) {
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
   }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<Map<String, Object>> handleDataIntegrity(
-      DataIntegrityViolationException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.CONFLICT.value());
-    body.put("error", "Resource already exists");
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  public ResponseEntity<ProblemDetail> handleDataIntegrity(DataIntegrityViolationException ex) {
+    return problem(HttpStatus.CONFLICT, "Resource already exists");
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
-    Map<String, Object> body = new HashMap<>();
-    body.put("status", HttpStatus.NOT_FOUND.value());
-    body.put("error", ex.getMessage());
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+  public ResponseEntity<ProblemDetail> handleNotFound(ResourceNotFoundException ex) {
+    return problem(HttpStatus.NOT_FOUND, ex.getMessage());
+  }
+
+  private static ResponseEntity<ProblemDetail> problem(HttpStatus status, String detail) {
+    return ResponseEntity.status(status).body(ProblemDetail.forStatusAndDetail(status, detail));
   }
 }

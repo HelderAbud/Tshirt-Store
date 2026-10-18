@@ -1,6 +1,6 @@
 # BACKLOG — Loja Revenda (MVP)
 
-> Ordem sugerida para acelerar: **B0 → B1 → B2 → B3 → B4 → F1 → P1**
+> Ordem sugerida: **B0 → B1 → B2 → B3 → B4 → P1 → A1 (backoffice) → F2 vitrine → F3 NF-e**
 
 Marque [x] quando concluir.  
 Dica: sempre execute em PR pequeno.
@@ -34,13 +34,25 @@ Dica: sempre execute em PR pequeno.
 - [x] **B4-01** Pagamento mock (simulado) + idempotência
 - [x] **B4-02** Baixa de estoque ao pagar
 
-## Marco F1 — Frontend Next.js (MVP)
-- [ ] **F1-01** Setup Next + páginas base — *adiado (Opção B)*
-- [ ] **F1-02** Carrinho no front (integração com API) — *adiado*
-- [ ] **F1-03** Auth no front (cookie httpOnly) — *adiado*
-- [ ] **F1-04** Admin mínimo (produtos e pedidos) — *adiado*
-
 ## Marco P1 — Polimento profissional
-- [ ] **P1-01** Padronizar erros (Problem Details)
-- [ ] **P1-02** Observabilidade mínima
-- [ ] **P1-03** Documentação final (README “de empresa”)
+- [x] **P1-01** Padronizar erros (Problem Details)
+- [x] **P1-02** Observabilidade mínima
+- [x] **P1-03** Documentação final (README “de empresa”)
+
+## Marco A1 — Backoffice loja única (fase 1)
+- [x] **A1-01** Ajuste de estoque + low-stock + listagem (`/api/admin/inventory/*`)
+- [x] **A1-02** Venda de balcão + série diária (`/api/admin/sales`, `/daily`)
+- [x] **A1-03** Front admin (login → estoque → venda → dashboard) em `frontend/`
+- [ ] **A1-04** (opcional) Migrar SPA para Next.js quando `npm install` estiver ok
+
+## Marco F2 — Vitrine cliente (fase 2)
+- [ ] **F2-01** UI catálogo/carrinho/checkout sobre `/api/catalog` e `/api/cart`
+
+## Marco F3 — NF-e (fase 3)
+- [ ] **F3-01** Import/emissão mínima + impacto em estoque
+
+## Marco F1 — Frontend Next.js (legado / adiado)
+- [ ] **F1-01** Setup Next + páginas base — *substituído parcialmente por A1-03 SPA; Next opcional em A1-04*
+- [ ] **F1-02** Carrinho no front (integração com API) — *fase 2*
+- [ ] **F1-03** Auth no front (cookie httpOnly) — *fase 2*
+- [ ] **F1-04** Admin mínimo (produtos e pedidos) — *coberto por A1*

@@ -266,7 +266,7 @@ class AdminProductVariantControllerTest {
             delete("/api/admin/products/" + productId)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken()))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.error").value("Product has variants"));
+        .andExpect(jsonPath("$.detail").value("Product has variants"));
   }
 
   @Test
@@ -290,7 +290,7 @@ class AdminProductVariantControllerTest {
                     }
                     """))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.error").value("SKU already exists: TSHIRT-SHARED-SKU"));
+        .andExpect(jsonPath("$.detail").value("SKU already exists: TSHIRT-SHARED-SKU"));
   }
 
   @Test
@@ -329,6 +329,6 @@ class AdminProductVariantControllerTest {
                     }
                     """))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.error").value("SKU already exists: TSHIRT-TAKEN-BY-VAR"));
+        .andExpect(jsonPath("$.detail").value("SKU already exists: TSHIRT-TAKEN-BY-VAR"));
   }
 }

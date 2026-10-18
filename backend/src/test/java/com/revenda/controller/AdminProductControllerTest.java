@@ -110,7 +110,11 @@ class AdminProductControllerTest {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.title").value("Bad Request"))
+        .andExpect(jsonPath("$.detail").value("Validation failed"))
+        .andExpect(jsonPath("$.errors").isMap());
   }
 
   @Test
