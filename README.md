@@ -1,6 +1,6 @@
 # Tshirt-Store
 
-> **Loja única de revenda de roupas** — API Spring + backoffice (estoque, venda de balcão, dashboard). Vitrine cliente e NF-e nas fases 2–3. Ver [`docs/BACKLOG.md`](docs/BACKLOG.md).
+> **Loja única de revenda de roupas** — API Spring, backoffice, vitrine do cliente e importação de NF-e. Ver [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
 Backend + SPA de gestão para uma loja de camisetas/roupas. API REST em **Spring Boot**; front admin em [`frontend/`](frontend/).
 
@@ -21,6 +21,8 @@ API e painel admin: JWT, catálogo com variantes, carrinho/pedidos e-commerce, v
 - Auth JWT + roles ADMIN/CUSTOMER
 - Catálogo, variantes, carrinho, pedidos e pagamento mock
 - Backoffice: `/api/admin/inventory/*`, `/api/admin/sales` (+ `/daily`) e UI em `frontend/`
+- Vitrine do cliente em `frontend/store.html` (catálogo, carrinho e pagamento mock)
+- Importação de XML de NF-e já autorizado (`POST /api/admin/nfe/import`) com impacto no estoque
 - Erros RFC 7807 + Actuator health/info/metrics
 - CI (Spotless + testes)
 
@@ -30,11 +32,11 @@ API e painel admin: JWT, catálogo com variantes, carrinho/pedidos e-commerce, v
 
 | Campo | Valor |
 |--------|--------|
-| **Pitch em uma linha** | Loja única de roupas: API + backoffice (estoque, venda, gráfico) — vitrine e NF-e depois. |
+| **Pitch em uma linha** | Loja única de roupas: API, backoffice, vitrine e importação de NF-e. Next.js continua opcional. |
 | **Deploy / demo** | Local: API **8084**, MySQL **3308**, front **3000** |
-| **Vídeo ou post LinkedIn** | Pendente — após merge A1 |
+| **Vídeo ou post LinkedIn** | Pendente |
 | **Destaque técnico** | JWT, Flyway, venda balcão + movimentos, Problem Details, Actuator |
-| **Etapas** | [`docs/portfolio/etapas.md`](docs/portfolio/etapas.md) · smoke [`docs/grill-logs/validation-2026-09-04-admin-backoffice.md`](docs/grill-logs/validation-2026-09-04-admin-backoffice.md) |
+| **Etapas** | Estado atual no [roadmap](#roadmap). [`docs/portfolio/etapas.md`](docs/portfolio/etapas.md) é o recorte de 2026-07-27. |
 
 ---
 
@@ -65,9 +67,9 @@ O projeto segue um MVP em marcos documentados em [`docs/BACKLOG.md`](docs/BACKLO
 - **Carrinho** (`/api/cart`) e **pedidos** (`/api/orders`) — item só por variante; estoque baixa no pagamento mock
 - **Problem Details** (RFC 7807) e **Actuator** (health/info/metrics)
 - **Backoffice:** ajuste de estoque, venda de balcão, série diária + SPA em `frontend/`
+- **Vitrine:** catálogo, carrinho e checkout mock em `frontend/store.html`
+- **NF-e:** importação de XML já autorizado, com entrada ou saída de estoque numa transação
 - **CI** no GitHub Actions (formatação + testes)
-
-Vitrine cliente e NF-e estão nas fases 2–3 do backlog.
 
 ---
 
@@ -163,9 +165,15 @@ Actuator expõe `health` (com probes liveness/readiness), `info` e `metrics`. De
 | GET | `/api/admin/sales?from=&to=` | ADMIN (datas ISO) |
 | GET | `/api/admin/sales/daily?from=&to=` | ADMIN |
 
-UI: [`frontend/README.md`](frontend/README.md) — `python -m http.server 3000` → http://localhost:3000  
+UI: [`frontend/README.md`](frontend/README.md) — `python -m http.server 3000` → http://localhost:3000 (painel) e http://localhost:3000/store.html (vitrine).
 
-**Nota:** pedidos e-commerce (`/api/orders` + pay) e vendas de balcão (`/api/admin/sales`) são fluxos separados de baixa de estoque.
+### NF-e (fase 3)
+
+| Método | Path | Auth |
+|--------|------|------|
+| POST | `/api/admin/nfe/import` | ADMIN (multipart, campo `file`, XML até 1 MB) |
+
+**Nota:** pedidos e-commerce (`/api/orders` + pay) e vendas de balcão (`/api/admin/sales`) são fluxos separados de baixa de estoque. A importação de NF-e é um terceiro caminho e reutiliza o ajuste de estoque.
 
 ### Erros (Problem Details)
 
@@ -291,6 +299,7 @@ Tshirt-Store/
 │       ├── domain/          # Entidades
 │       ├── exception/       # Problem Details (RFC 7807)
 │       └── config/          # Segurança, filtros JWT
+├── frontend/                # Painel admin e vitrine (HTML/JS)
 ├── docs/                    # Backlog, workflow, arquitetura
 ├── infra/
 │   └── docker-compose.yml   # MySQL para desenvolvimento
@@ -305,7 +314,7 @@ Decisões conscientes do MVP (honestidade de portfólio):
 
 | Escolha | Porquê | Limite |
 |---------|--------|--------|
-| Backend-only (F1 adiado) | Evitar overlap com LojApp e focar API testável | Sem UI de loja |
+| HTML/JS no lugar de Next.js | Painel e vitrine entregues sem depender de `npm install` | Next.js segue opcional (A1-04) |
 | Pagamento mock + idempotência | Prova fluxo de estoque sem gateway real | Não processa dinheiro |
 | MySQL local + H2 nos testes | Setup simples e CI rápido | Sem Testcontainers neste MVP |
 | JWT no body (sem cookie httpOnly) | Simples para Swagger/curl; cookie fica para o front | Menos alinhado a SPA real |
@@ -318,8 +327,8 @@ Decisões conscientes do MVP (honestidade de portfólio):
 
 O planejamento detalhado está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
 
-- **Feito:** B0–B4 · P1 · A1 backoffice (API + SPA)
-- **Próximo:** F2 vitrine cliente · F3 NF-e
+- **Feito:** B0–B4 · P1 · A1 backoffice (API + SPA) · F2 vitrine · F3 importação de NF-e
+- **Próximo:** nenhum marco obrigatório aberto
 - **Opcional:** A1-04 Next.js quando npm/rede permitir
 
 ---
