@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -81,6 +83,26 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<ProblemDetail> handleNotFound(ResourceNotFoundException ex) {
     return problem(HttpStatus.NOT_FOUND, ex.getMessage());
+  }
+
+  @ExceptionHandler(NfeXmlException.class)
+  public ResponseEntity<ProblemDetail> handleNfeXml(NfeXmlException ex) {
+    return problem(HttpStatus.BAD_REQUEST, ex.getMessage());
+  }
+
+  @ExceptionHandler(NfeImportConflictException.class)
+  public ResponseEntity<ProblemDetail> handleNfeConflict(NfeImportConflictException ex) {
+    return problem(HttpStatus.CONFLICT, ex.getMessage());
+  }
+
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ProblemDetail> handleMaxUpload(MaxUploadSizeExceededException ex) {
+    return problem(HttpStatus.BAD_REQUEST, "XML file exceeds 1MB");
+  }
+
+  @ExceptionHandler(MissingServletRequestPartException.class)
+  public ResponseEntity<ProblemDetail> handleMissingPart(MissingServletRequestPartException ex) {
+    return problem(HttpStatus.BAD_REQUEST, "XML file is required");
   }
 
   private static ResponseEntity<ProblemDetail> problem(HttpStatus status, String detail) {
