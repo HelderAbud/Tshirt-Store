@@ -49,7 +49,7 @@ Dica: sempre execute em PR pequeno.
 - [x] **F2-01** UI catálogo/carrinho/checkout sobre `/api/catalog` e `/api/cart`
 
 ## Marco F3 — NF-e (fase 3)
-- [ ] **F3-01** Import/emissão mínima + impacto em estoque
+- [x] **F3-01** Import/emissão mínima + impacto em estoque
 
 ## Marco F1 — Frontend Next.js (legado / adiado)
 - [ ] **F1-01** Setup Next + páginas base — *substituído parcialmente por A1-03 SPA; Next opcional em A1-04*

@@ -1,6 +1,10 @@
 spring:
   application:
     name: loja-revenda-backend
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 1MB
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3308/loja_revenda}
     username: ${DB_USERNAME}

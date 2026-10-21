@@ -17,7 +17,7 @@ function clearToken() {
 
 async function api(path, options = {}) {
   const headers = { ...(options.headers || {}) };
-  if (options.body && !headers["Content-Type"]) {
+  if (options.body && !(options.body instanceof FormData) && !headers["Content-Type"]) {
     headers["Content-Type"] = "application/json";
   }
   const token = getToken();
@@ -51,6 +51,7 @@ function shell(active, bodyHtml) {
       <button class="nav-btn ${active === "dashboard" ? "active" : ""}" data-go="dashboard">Dashboard</button>
       <button class="nav-btn ${active === "inventory" ? "active" : ""}" data-go="inventory">Estoque</button>
       <button class="nav-btn ${active === "sales" ? "active" : ""}" data-go="sales">Venda</button>
+      <button class="nav-btn ${active === "nfe" ? "active" : ""}" data-go="nfe">NF-e</button>
       <button class="ghost" id="logout">Sair</button>
     </nav>
     <section class="panel">${bodyHtml}</section>
@@ -294,7 +295,41 @@ function route(name) {
   if (name === "login") return renderLogin();
   if (name === "inventory") return renderInventory();
   if (name === "sales") return renderSales();
+  if (name === "nfe") return renderNfe();
   return renderDashboard();
+}
+
+function renderNfe() {
+  app.innerHTML = shell(
+    "nfe",
+    `
+    <h2>NF-e</h2>
+    <p class="muted">XML já autorizado. A chave repetida não mexe no estoque.</p>
+    <form id="nfe-form" class="row">
+      <input id="nfe-file" type="file" accept=".xml,text/xml,application/xml" required />
+      <button type="submit">Importar</button>
+    </form>
+    <p id="msg" class="muted"></p>
+  `,
+  );
+  bindNav();
+  document.getElementById("nfe-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const msg = document.getElementById("msg");
+    const input = document.getElementById("nfe-file");
+    const body = new FormData();
+    body.append("file", input.files[0]);
+    msg.className = "muted";
+    msg.textContent = "Importando…";
+    try {
+      const result = await api("/api/admin/nfe/import", { method: "POST", body });
+      msg.className = "ok";
+      msg.textContent = `${result.accessKey} · ${result.direction}`;
+    } catch (error) {
+      msg.className = "err";
+      msg.textContent = error.message;
+    }
+  });
 }
 
 route(getToken() ? "dashboard" : "login");
