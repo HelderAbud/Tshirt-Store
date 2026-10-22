@@ -9,6 +9,7 @@ const nav = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/inventory", label: "Estoque" },
   { href: "/sales", label: "Venda" },
+  { href: "/nfe", label: "NF-e" },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

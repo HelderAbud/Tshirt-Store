@@ -16,7 +16,7 @@ import {
   pagerState,
   saveReturnRoute,
   variantRowsHtml,
-} from "./store-logic.mjs";
+} from "./public/store-logic.mjs";
 
 test("customer token key is separate from the admin key", () => {
   assert.equal(CUSTOMER_TOKEN_KEY, "tshirt_customer_token");

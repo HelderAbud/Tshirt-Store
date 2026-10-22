@@ -43,7 +43,7 @@ Dica: sempre execute em PR pequeno.
 - [x] **A1-01** Ajuste de estoque + low-stock + listagem (`/api/admin/inventory/*`)
 - [x] **A1-02** Venda de balcão + série diária (`/api/admin/sales`, `/daily`)
 - [x] **A1-03** Front admin (login → estoque → venda → dashboard) em `frontend/`
-- [ ] **A1-04** (opcional) Migrar SPA para Next.js quando `npm install` estiver ok
+- [x] **A1-04** (opcional) Migrar SPA para Next.js quando `npm install` estiver ok
 
 ## Marco F2 — Vitrine cliente (fase 2)
 - [x] **F2-01** UI catálogo/carrinho/checkout sobre `/api/catalog` e `/api/cart`

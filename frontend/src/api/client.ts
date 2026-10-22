@@ -31,7 +31,8 @@ export async function apiFetch<T>(
   options: RequestInit = {},
 ): Promise<T> {
   const headers = new Headers(options.headers);
-  if (!headers.has("Content-Type") && options.body) {
+  const bodyIsForm = typeof FormData !== "undefined" && options.body instanceof FormData;
+  if (!headers.has("Content-Type") && options.body && !bodyIsForm) {
     headers.set("Content-Type", "application/json");
   }
   const token = getToken();
