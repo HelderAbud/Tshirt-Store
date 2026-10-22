@@ -32,7 +32,7 @@ API e painel admin: JWT, catálogo com variantes, carrinho/pedidos e-commerce, v
 
 | Campo | Valor |
 |--------|--------|
-| **Pitch em uma linha** | Loja única de roupas: API, backoffice, vitrine e importação de NF-e. Next.js continua opcional. |
+| **Pitch em uma linha** | Loja única de roupas: API, painel Next.js, vitrine e importação de NF-e. |
 | **Deploy / demo** | Local: API **8084**, MySQL **3308**, front **3000** |
 | **Vídeo ou post LinkedIn** | Pendente |
 | **Destaque técnico** | JWT, Flyway, venda balcão + movimentos, Problem Details, Actuator |
@@ -165,7 +165,7 @@ Actuator expõe `health` (com probes liveness/readiness), `info` e `metrics`. De
 | GET | `/api/admin/sales?from=&to=` | ADMIN (datas ISO) |
 | GET | `/api/admin/sales/daily?from=&to=` | ADMIN |
 
-UI: [`frontend/README.md`](frontend/README.md) — `python -m http.server 3000` → http://localhost:3000 (painel) e http://localhost:3000/store.html (vitrine).
+UI: [`frontend/README.md`](frontend/README.md) — `npm run dev` na pasta `frontend` → http://localhost:3000 (painel) e http://localhost:3000/store.html (vitrine).
 
 ### NF-e (fase 3)
 
@@ -299,7 +299,7 @@ Tshirt-Store/
 │       ├── domain/          # Entidades
 │       ├── exception/       # Problem Details (RFC 7807)
 │       └── config/          # Segurança, filtros JWT
-├── frontend/                # Painel admin e vitrine (HTML/JS)
+├── frontend/                # Painel Next.js e vitrine estática
 ├── docs/                    # Backlog, workflow, arquitetura
 ├── infra/
 │   └── docker-compose.yml   # MySQL para desenvolvimento
@@ -314,7 +314,7 @@ Decisões conscientes do MVP (honestidade de portfólio):
 
 | Escolha | Porquê | Limite |
 |---------|--------|--------|
-| HTML/JS no lugar de Next.js | Painel e vitrine entregues sem depender de `npm install` | Next.js segue opcional (A1-04) |
+| Painel Next.js e vitrine HTML | O painel sobe com `npm run dev` na porta 3000; a vitrine continua em `public/store.html` | A vitrine ainda não é React |
 | Pagamento mock + idempotência | Prova fluxo de estoque sem gateway real | Não processa dinheiro |
 | MySQL local + H2 nos testes | Setup simples e CI rápido | Sem Testcontainers neste MVP |
 | JWT no body (sem cookie httpOnly) | Simples para Swagger/curl; cookie fica para o front | Menos alinhado a SPA real |
@@ -327,9 +327,8 @@ Decisões conscientes do MVP (honestidade de portfólio):
 
 O planejamento detalhado está em **[`docs/BACKLOG.md`](docs/BACKLOG.md)**.
 
-- **Feito:** B0–B4 · P1 · A1 backoffice (API + SPA) · F2 vitrine · F3 importação de NF-e
+- **Feito:** B0–B4 · P1 · A1 backoffice (API + Next) · A1-04 · F2 vitrine · F3 importação de NF-e
 - **Próximo:** nenhum marco obrigatório aberto
-- **Opcional:** A1-04 Next.js quando npm/rede permitir
 
 ---
 

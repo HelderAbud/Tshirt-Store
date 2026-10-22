@@ -73,7 +73,7 @@ function shell(active, bodyHtml) {
     <header>
       <p class="eyebrow">Tshirt Store</p>
       <h1>Loja</h1>
-      <p class="muted"><a href="./index.html">Painel</a></p>
+      <p class="muted"><a href="/">Painel</a></p>
     </header>
     <nav class="row">
       <button type="button" data-go="catalog" class="${active === "catalog" ? "nav-btn active" : "nav-btn"}">Catálogo</button>
@@ -194,7 +194,7 @@ function renderLogin() {
     <section class="panel" style="max-width:420px;margin:4rem auto;">
       <p class="eyebrow">Tshirt Store</p>
       <h1>Entrar</h1>
-      <p class="muted"><a href="./index.html">Painel</a></p>
+      <p class="muted"><a href="/">Painel</a></p>
       <form id="login-form" style="display:grid;gap:0.75rem;margin-top:1rem;">
         <input name="email" type="email" value="customer@demo.local" required />
         <input name="password" type="password" value="Demo12345!" required />
