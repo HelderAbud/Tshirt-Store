@@ -1,7 +1,6 @@
 package com.revenda.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +20,8 @@ class DemoUserSeedLoginTest {
   @Autowired private MockMvc mockMvc;
 
   @Test
-  @DisplayName("Login com admin seed (Flyway V4) retorna token ADMIN")
-  void shouldLoginSeededAdmin() throws Exception {
+  @DisplayName("admin demo does not exist without the local profile")
+  void adminDemoIsAbsentWithoutLocalProfile() throws Exception {
     mockMvc
         .perform(
             post("/api/auth/login")
@@ -31,15 +30,12 @@ class DemoUserSeedLoginTest {
                     """
                     {"email":"admin@demo.local","password":"Demo12345!"}
                     """))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email").value("admin@demo.local"))
-        .andExpect(jsonPath("$.role").value("ADMIN"))
-        .andExpect(jsonPath("$.token").isNotEmpty());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
-  @DisplayName("Login com customer seed (Flyway V4) retorna token CUSTOMER")
-  void shouldLoginSeededCustomer() throws Exception {
+  @DisplayName("customer demo does not exist without the local profile")
+  void customerDemoIsAbsentWithoutLocalProfile() throws Exception {
     mockMvc
         .perform(
             post("/api/auth/login")
@@ -48,9 +44,6 @@ class DemoUserSeedLoginTest {
                     """
                     {"email":"customer@demo.local","password":"Demo12345!"}
                     """))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email").value("customer@demo.local"))
-        .andExpect(jsonPath("$.role").value("CUSTOMER"))
-        .andExpect(jsonPath("$.token").isNotEmpty());
+        .andExpect(status().isUnauthorized());
   }
 }
