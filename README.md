@@ -189,9 +189,9 @@ Respostas de erro de negócio/validação seguem [RFC 7807](https://datatracker.
 - **Exemplo:** `GET /api/me` retorna o usuário autenticado (email e role).
 - **Roles:** `/api/admin/**` exige `ADMIN` (CUSTOMER → 403; sem token → 401). `/api/catalog/**` é público.
 
-### Utilizadores demo (seed Flyway V4)
+### Utilizadores demo (perfil `local`)
 
-Só para **local / portfólio** — não use em produção.
+O Flyway não deixa esses usuários no banco. Eles só nascem com `SPRING_PROFILES_ACTIVE=local`.
 
 | Email | Senha | Role |
 |-------|-------|------|
@@ -201,7 +201,7 @@ Só para **local / portfólio** — não use em produção.
 ### Demo em ~5 minutos
 
 1. `cd infra && docker compose --env-file ../.env up -d` (MySQL host **3308**)
-2. `cd backend && mvn spring-boot:run` (API **8084**; Flyway aplica V1–V4)
+2. `cd backend && mvn spring-boot:run` com `SPRING_PROFILES_ACTIVE=local` (API **8084**; Flyway aplica V1–V11 e o perfil recria os usuários demo)
 3. Login admin:
    ```bash
    curl -s -X POST http://localhost:8084/api/auth/login \

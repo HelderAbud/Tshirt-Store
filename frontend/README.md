@@ -13,7 +13,7 @@ npm run dev
 ```
 
 3. Painel: http://localhost:3000
-4. Login: `admin@demo.local` / `Demo12345!`
+4. Login do painel começa vazio. Com a API no perfil `local`: `admin@demo.local` / `Demo12345!`
 
 CORS da API libera `http://localhost:3000`.
 

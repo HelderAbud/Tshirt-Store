@@ -196,8 +196,8 @@ function renderLogin() {
       <h1>Entrar</h1>
       <p class="muted"><a href="/">Painel</a></p>
       <form id="login-form" style="display:grid;gap:0.75rem;margin-top:1rem;">
-        <input name="email" type="email" value="customer@demo.local" required />
-        <input name="password" type="password" value="Demo12345!" required />
+        <input name="email" type="email" required />
+        <input name="password" type="password" required />
         <button type="submit">Entrar</button>
       </form>
       <form id="register-form" style="display:grid;gap:0.75rem;margin-top:1rem;">
