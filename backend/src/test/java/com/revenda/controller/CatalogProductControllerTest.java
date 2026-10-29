@@ -60,7 +60,7 @@ class CatalogProductControllerTest {
     Long id = Long.parseLong(response.replaceAll("(?s).*\"id\"\\s*:\\s*(\\d+).*", "$1"));
 
     mockMvc
-        .perform(get("/api/catalog/products"))
+        .perform(get("/api/catalog/products?size=200"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.content").isArray())
         .andExpect(jsonPath("$.content[?(@.sku=='TSHIRT-CAT-01')]").exists())

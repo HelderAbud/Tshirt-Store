@@ -14,6 +14,9 @@ test("admin nav has an NF-e screen that posts the xml", () => {
   assert.match(page, /importNfe/);
   assert.match(api, /\/api\/admin\/nfe\/import/);
   assert.match(api, /FormData/);
+  assert.match(api, /\/api\/admin\/nfe\/supplier-codes/);
+  assert.match(page, /supplierCnpj/);
+  assert.match(page, /createSupplierCode/);
   assert.match(client, /instanceof FormData/);
 });
 

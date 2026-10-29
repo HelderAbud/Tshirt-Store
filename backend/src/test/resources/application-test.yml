@@ -15,3 +15,5 @@ spring:
 app:
   jwt:
     secret: dGVzdC1qd3Qtc2VjcmV0LWZvci10c2hpcnQtc3RvcmUtbWluaW11bS0zMi1ieXRlcw==
+  store:
+    cnpj: "12345678000195"
