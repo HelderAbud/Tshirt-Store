@@ -54,4 +54,6 @@ springdoc:
 app:
   jwt:
     secret: ${JWT_SECRET}
+  store:
+    cnpj: ${STORE_CNPJ:}
 

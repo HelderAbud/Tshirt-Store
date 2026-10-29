@@ -22,12 +22,11 @@ public class NfeXmlParser {
     if (!accessKey.matches("\\d{44}")) {
       throw new NfeXmlException("chNFe must have 44 digits");
     }
-    NfeDirection direction = direction(text(document, "tpNF"));
     List<Line> lines = lines(document);
     if (lines.isEmpty()) {
       throw new NfeXmlException("NF-e has no items");
     }
-    return new Parsed(accessKey, direction, lines);
+    return new Parsed(accessKey, partyCnpj(document, "emit"), partyCnpj(document, "dest"), lines);
   }
 
   private Document document(byte[] xml) {
@@ -46,29 +45,31 @@ public class NfeXmlParser {
     }
   }
 
-  private NfeDirection direction(String tpNf) {
-    if ("0".equals(tpNf)) {
-      return NfeDirection.ENTRADA;
-    }
-    if ("1".equals(tpNf)) {
-      return NfeDirection.SAIDA;
-    }
-    throw new NfeXmlException("tpNF must be 0 or 1");
-  }
-
   private List<Line> lines(Document document) {
-    Map<String, Integer> qtyBySku = new LinkedHashMap<>();
+    Map<String, Integer> qtyByCode = new LinkedHashMap<>();
     NodeList dets = document.getElementsByTagNameNS("*", "det");
     for (int i = 0; i < dets.getLength(); i++) {
       Element det = (Element) dets.item(i);
-      String sku = text(det, "cProd");
-      if (sku.isBlank()) {
-        throw new NfeXmlException("qCom must be a positive integer");
+      String code = text(det, "cProd");
+      if (code.isBlank()) {
+        throw new NfeXmlException("cProd is required");
       }
       int qty = quantity(text(det, "qCom"));
-      qtyBySku.merge(sku, qty, Integer::sum);
+      qtyByCode.merge(code, qty, Integer::sum);
     }
-    return qtyBySku.entrySet().stream().map(e -> new Line(e.getKey(), e.getValue())).toList();
+    return qtyByCode.entrySet().stream().map(e -> new Line(e.getKey(), e.getValue())).toList();
+  }
+
+  private String partyCnpj(Document document, String party) {
+    NodeList parties = document.getElementsByTagNameNS("*", party);
+    if (parties.getLength() == 0) {
+      return "";
+    }
+    return digits(text((Element) parties.item(0), "CNPJ"));
+  }
+
+  private static String digits(String raw) {
+    return raw.replaceAll("\\D", "");
   }
 
   private int quantity(String raw) {
@@ -97,7 +98,8 @@ public class NfeXmlParser {
     return nodes.item(0).getTextContent().trim();
   }
 
-  public record Parsed(String accessKey, NfeDirection direction, List<Line> lines) {}
+  public record Parsed(
+      String accessKey, String emitterCnpj, String recipientCnpj, List<Line> lines) {}
 
-  public record Line(String sku, int qty) {}
+  public record Line(String code, int qty) {}
 }

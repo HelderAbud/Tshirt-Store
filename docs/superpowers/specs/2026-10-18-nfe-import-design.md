@@ -1,7 +1,7 @@
 # Spec — Importação de NF-e (F3-01)
 
 **Data:** 2026-10-18  
-**Status:** aprovada  
+**Status:** aprovada. Direção e vínculo do item foram substituídos por [2026-10-29-nfe-cnpj-direction-design.md](2026-10-29-nfe-cnpj-direction-design.md).  
 **Trilha:** Complex
 
 ## Problem
@@ -56,8 +56,8 @@ Uma transação só.
 
 ## Decisions
 
-- A direção vem só de `tpNF`.
-- O vínculo do item é só `cProd` = SKU da variante.
+- A direção vinha só de `tpNF`. Isso foi substituído pela spec de 2026-10-29.
+- O vínculo do item era só `cProd` = SKU da variante. Na entrada, isso foi substituído pela spec de 2026-10-29. Na saída, `cProd` continua sendo o SKU.
 - A chave vem do elemento `chNFe`, não do atributo `Id`.
 - `10.0000` é inteiro. Qualquer fração real é rejeitada.
 - Falha em uma linha desfaz a nota inteira.

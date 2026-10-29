@@ -172,6 +172,10 @@ UI: [`frontend/README.md`](frontend/README.md) — `npm run dev` na pasta `front
 | Método | Path | Auth |
 |--------|------|------|
 | POST | `/api/admin/nfe/import` | ADMIN (multipart, campo `file`, XML até 1 MB) |
+| POST | `/api/admin/nfe/supplier-codes` | ADMIN (`supplierCnpj`, `supplierCode`, `sku`) |
+| GET | `/api/admin/nfe/supplier-codes` | ADMIN |
+
+A direção não usa `tpNF`. Com a variável `STORE_CNPJ` de 14 dígitos, destinatário igual à loja é entrada e emitente igual à loja é saída. Sem esse valor, a importação responde 400 e não grava nada. Na entrada, o `cProd` do fornecedor precisa existir em `supplier_sku_maps`. Na saída, o `cProd` é o SKU da variante.
 
 **Nota:** pedidos e-commerce (`/api/orders` + pay) e vendas de balcão (`/api/admin/sales`) são fluxos separados de baixa de estoque. A importação de NF-e é um terceiro caminho e reutiliza o ajuste de estoque.
 
@@ -201,7 +205,7 @@ O Flyway não deixa esses usuários no banco. Eles só nascem com `SPRING_PROFIL
 ### Demo em ~5 minutos
 
 1. `cd infra && docker compose --env-file ../.env up -d` (MySQL host **3308**)
-2. `cd backend && mvn spring-boot:run` com `SPRING_PROFILES_ACTIVE=local` (API **8084**; Flyway aplica V1–V11 e o perfil recria os usuários demo)
+2. `cd backend && mvn spring-boot:run` com `SPRING_PROFILES_ACTIVE=local` (API **8084**; Flyway aplica V1–V12 e o perfil recria os usuários demo)
 3. Login admin:
    ```bash
    curl -s -X POST http://localhost:8084/api/auth/login \
